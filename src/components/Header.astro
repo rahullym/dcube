@@ -1,0 +1,29 @@
+---
+const { pathname } = Astro.url;
+const isActive = (href: string) => (pathname === href || (href !== "/" && pathname.startsWith(href))) ? "active" : "";
+---
+<header class="site-header">
+  <div class="container nav">
+    <a href="/" class="brand">D<span>CUBE</span></a>
+    <ul class="nav-links">
+      <li><a href="/" class={isActive("/")}>Home</a></li>
+      <li><a href="/services" class={isActive("/services")}>Services</a></li>
+      <li><a href="/about" class={isActive("/about")}>About</a></li>
+      <li><a href="/gallery" class={isActive("/gallery")}>Gallery</a></li>
+      <li><a href="/contact" class={isActive("/contact")}>Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="/contact" class="btn btn-primary">Book Now</a>
+      <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector(".menu-toggle");
+  const links = document.querySelector(".nav-links");
+  if (toggle && links) {
+    toggle.addEventListener("click", () => links.classList.toggle("open"));
+    links.querySelectorAll("a").forEach(a => a.addEventListener("click", () => links.classList.remove("open")));
+  }
+</script>

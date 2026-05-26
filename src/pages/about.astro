@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+---
+<Layout title="About — DCUBE Salon">
+  <PageHeader eyebrow="Our story" title="Beauty, made personal." description="Two studios. Two countries. One unwavering commitment to the people who walk through our doors." />
+
+  <section class="section">
+    <div class="container split">
+      <div class="reveal">
+        <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=900&q=80" alt="Stylist working on a bridal client" />
+      </div>
+      <div class="reveal">
+        <span class="eyebrow">Why DCUBE</span>
+        <h2>A salon built around how you feel, not just how you look.</h2>
+        <p>DCUBE began with a simple belief — that walking into a salon should feel less like a transaction and more like a ritual. Every chair, every conversation, every brush stroke is meant to leave you a little more yourself.</p>
+        <p>We're a small team of certified stylists, makeup artists, and aestheticians, trained across India and Canada. We invest in continuous learning so the techniques we bring to your chair are current with global trends — and we curate products our team would use on themselves.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-light">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">What guides us</span>
+        <h2>Our values</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="service-card reveal">
+          <div class="icon">♥</div>
+          <h3>Personal Care</h3>
+          <p>No two faces, hair types, or occasions are alike. We tailor every service to you.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="icon">✓</div>
+          <h3>Honest Pricing</h3>
+          <p>Transparent menus. No surprise upsells. Real value for real budgets.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="icon">★</div>
+          <h3>Continuous Craft</h3>
+          <p>Our stylists train year-round so your look stays ahead of the trend, not behind it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-tight">
+    <div class="container stats reveal">
+      <div class="stat"><span class="num">12+</span><span class="lbl">Years of Craft</span></div>
+      <div class="stat"><span class="num">2</span><span class="lbl">Countries</span></div>
+      <div class="stat"><span class="num">5,000+</span><span class="lbl">Happy Clients</span></div>
+      <div class="stat"><span class="num">300+</span><span class="lbl">Bridal Looks</span></div>
+    </div>
+  </section>
+
+  <section class="cta-strip">
+    <div class="container reveal">
+      <h2>Come say hello.</h2>
+      <p>Walk-ins welcome, but bookings get the best slots — especially on weekends.</p>
+      <a href="/contact" class="btn btn-light">Book an Appointment</a>
+    </div>
+  </section>
+</Layout>

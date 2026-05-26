@@ -1,0 +1,93 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+
+const categories = [
+  {
+    title: "Bridal & Special Occasion",
+    items: [
+      { name: "Bridal Makeup (HD)", price: "₹8,000+" },
+      { name: "Engagement / Reception Makeup", price: "₹6,000+" },
+      { name: "Pre-Bridal Package (4 sessions)", price: "₹12,000" },
+      { name: "Bridal Hair Styling", price: "₹3,500+" },
+      { name: "Saree / Lehenga Draping", price: "₹1,500" },
+    ],
+  },
+  {
+    title: "Hair — Women",
+    items: [
+      { name: "Hair Cut & Style", price: "₹600+" },
+      { name: "Global Color", price: "₹3,500+" },
+      { name: "Highlights / Balayage", price: "₹5,500+" },
+      { name: "Keratin / Smoothing", price: "₹6,000+" },
+      { name: "Hair Spa", price: "₹1,200" },
+    ],
+  },
+  {
+    title: "Hair — Men",
+    items: [
+      { name: "Hair Cut", price: "₹500" },
+      { name: "Beard Trim & Shape", price: "₹300" },
+      { name: "Hair Color", price: "₹1,200+" },
+      { name: "Scalp Treatment", price: "₹900" },
+      { name: "Kids Cut (under 12)", price: "₹400" },
+    ],
+  },
+  {
+    title: "Skin & Aesthetics",
+    items: [
+      { name: "Classic Clean-up", price: "₹800" },
+      { name: "Signature Facial", price: "₹1,800" },
+      { name: "Brightening Facial", price: "₹2,500" },
+      { name: "Anti-Aging Treatment", price: "₹3,500" },
+      { name: "Threading / Waxing", price: "₹100+" },
+    ],
+  },
+  {
+    title: "Hands & Feet",
+    items: [
+      { name: "Classic Manicure", price: "₹600" },
+      { name: "Spa Pedicure", price: "₹900" },
+      { name: "Gel / Extension Nails", price: "₹1,500+" },
+      { name: "Nail Art (per nail)", price: "₹100" },
+    ],
+  },
+  {
+    title: "Makeup",
+    items: [
+      { name: "Party Makeup", price: "₹2,500+" },
+      { name: "HD Airbrush Makeup", price: "₹4,500" },
+      { name: "Family Function Package", price: "On request" },
+      { name: "Makeup Lesson (1 hr)", price: "₹2,000" },
+    ],
+  },
+];
+---
+<Layout title="Services & Pricing — DCUBE Salon">
+  <PageHeader eyebrow="Our menu" title="Services & Pricing" description="A complete menu of beauty services — for brides, families, and everyone in between. Pricing is indicative; final cost depends on hair length and product choices." />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-2">
+        {categories.map(cat => (
+          <div class="service-list reveal">
+            <h3>{cat.title}</h3>
+            <ul>
+              {cat.items.map(it => (
+                <li><span>{it.name}</span><span>{it.price}</span></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-strip">
+    <div class="container reveal">
+      <h2>Not sure what you need?</h2>
+      <p>Tell us about your occasion — we'll recommend the perfect package.</p>
+      <a href="/contact" class="btn btn-light">Talk to a Stylist</a>
+    </div>
+  </section>
+</Layout>

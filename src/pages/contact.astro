@@ -1,0 +1,111 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+---
+<Layout title="Contact & Booking — DCUBE Salon">
+  <PageHeader eyebrow="Get in touch" title="Book your appointment" description="Tell us a little about what you're looking for and we'll confirm your slot within a few hours." />
+
+  <section class="section">
+    <div class="container grid grid-2" style="gap:48px;">
+      <div class="reveal">
+        <h2>Reserve your chair</h2>
+        <p>Walk-ins are welcome, but bookings get the best slots — especially on weekends and during wedding season.</p>
+        <form id="booking-form" class="form" novalidate>
+          <div class="form-row">
+            <div>
+              <label for="name">Full Name</label>
+              <input id="name" name="name" type="text" required />
+            </div>
+            <div>
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" required />
+            </div>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required />
+          </div>
+          <div class="form-row">
+            <div>
+              <label for="service">Service</label>
+              <select id="service" name="service" required>
+                <option value="">Select a service</option>
+                <option>Bridal Makeup</option>
+                <option>Pre-Bridal Package</option>
+                <option>Hair Cut & Style</option>
+                <option>Hair Color / Highlights</option>
+                <option>Keratin / Smoothing</option>
+                <option>Facial / Skin Treatment</option>
+                <option>Mani / Pedi</option>
+                <option>Men's Grooming</option>
+                <option>Other / Consultation</option>
+              </select>
+            </div>
+            <div>
+              <label for="date">Preferred Date</label>
+              <input id="date" name="date" type="date" required />
+            </div>
+          </div>
+          <div>
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" name="notes" placeholder="Tell us about your occasion, hair length, or anything else we should know."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Request Booking</button>
+          <div class="form-msg" role="status"></div>
+        </form>
+      </div>
+
+      <div class="reveal" style="display:grid; gap:24px; align-content:start;">
+        <div class="contact-card">
+          <h3>India Studio</h3>
+          <div class="contact-item">
+            <div class="ico">📞</div>
+            <div><strong>Phone</strong><a href="tel:+919946007990">+91 99460 07990</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="ico">📧</div>
+            <div><strong>Email</strong><a href="mailto:hello@dcubesalon.com">hello@dcubesalon.com</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="ico">🕒</div>
+            <div><strong>Hours</strong>Mon–Sat · 10am – 8pm<br/>Sunday · 11am – 6pm</div>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <h3>Canada Studio</h3>
+          <div class="contact-item">
+            <div class="ico">📞</div>
+            <div><strong>Phone</strong><a href="tel:+19024127235">+1 902 412 7235</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="ico">📧</div>
+            <div><strong>Email</strong><a href="mailto:hello@dcubesalon.com">hello@dcubesalon.com</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="ico">🕒</div>
+            <div><strong>Hours</strong>By appointment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.querySelector<HTMLFormElement>("#booking-form");
+    if (form) {
+      const dateInput = form.querySelector<HTMLInputElement>('input[type="date"]');
+      if (dateInput) dateInput.min = new Date().toISOString().split("T")[0];
+
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        const msg = form.querySelector<HTMLElement>(".form-msg")!;
+        msg.classList.add("success");
+        msg.textContent = "Thank you! We've received your booking request and will confirm shortly via phone or email.";
+        form.reset();
+        msg.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    }
+  </script>
+</Layout>

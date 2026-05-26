@@ -1,0 +1,42 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+
+const images = [
+  { src: "https://images.unsplash.com/photo-1595944954678-7fdf63d6a09b?auto=format&fit=crop&w=800&q=80", alt: "Bridal makeup look" },
+  { src: "https://images.unsplash.com/photo-1560869713-7d0a29430803?auto=format&fit=crop&w=800&q=80", alt: "Hair styling" },
+  { src: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80", alt: "Salon interior" },
+  { src: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80", alt: "Hair color treatment" },
+  { src: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80", alt: "Makeup artistry" },
+  { src: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80", alt: "Mens grooming" },
+  { src: "https://images.unsplash.com/photo-1571875257727-256c39da42af?auto=format&fit=crop&w=800&q=80", alt: "Skin treatment" },
+  { src: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80", alt: "Bridal jewelry detail" },
+  { src: "https://images.unsplash.com/photo-1519415943484-9fa1873496d4?auto=format&fit=crop&w=800&q=80", alt: "Hair styling in progress" },
+  { src: "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=800&q=80", alt: "Manicure" },
+  { src: "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=800&q=80", alt: "Bridal hair updo" },
+  { src: "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?auto=format&fit=crop&w=800&q=80", alt: "Facial treatment" },
+];
+---
+<Layout title="Gallery — DCUBE Salon">
+  <PageHeader eyebrow="Our work" title="Looks we've loved." description="A glimpse into recent brides, transformations, and quiet moments from inside the studio." />
+
+  <section class="section">
+    <div class="container">
+      <div class="gallery reveal">
+        {images.map(img => (
+          <div class="gallery-item">
+            <img src={img.src} alt={img.alt} data-full={img.src.replace("w=800", "w=1600")} loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-strip">
+    <div class="container reveal">
+      <h2>Want to be next?</h2>
+      <p>Book a consultation and let's design a look that's unmistakably yours.</p>
+      <a href="/contact" class="btn btn-light">Book Now</a>
+    </div>
+  </section>
+</Layout>

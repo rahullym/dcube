@@ -1,0 +1,90 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+---
+<Layout>
+  <section class="hero">
+    <div class="container hero-inner">
+      <span class="eyebrow">Unisex · Bridal · Family Salon</span>
+      <h1>Dedicated beauty services for every celebration.</h1>
+      <p>From wedding-day makeovers to everyday self-care, DCUBE blends craft, comfort, and care — for you and your family.</p>
+      <div class="hero-actions">
+        <a href="/contact" class="btn btn-light">Book an Appointment</a>
+        <a href="/services" class="btn btn-outline-light">Explore Services</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">What we do</span>
+        <h2>Beauty, crafted with intention.</h2>
+        <p>A full-service salon experience — bridal, hair, skin, and grooming — delivered by stylists who treat every client like family.</p>
+      </div>
+      <div class="grid grid-3">
+        <ServiceCard icon="✦" title="Bridal Makeover" description="Wedding-day makeup, hair, and pre-bridal packages tailored to your story." price="From ₹8,000" />
+        <ServiceCard icon="✂" title="Hair Studio" description="Cuts, color, smoothing, and styling for women, men, and kids." price="From ₹500" />
+        <ServiceCard icon="✿" title="Skin & Aesthetics" description="Facials, clean-ups, threading, and advanced skincare treatments." price="From ₹800" />
+      </div>
+      <div style="text-align:center; margin-top:48px;">
+        <a href="/services" class="btn btn-outline">View All Services</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-light">
+    <div class="container split">
+      <div class="reveal">
+        <span class="eyebrow">Our story</span>
+        <h2>Where every guest leaves feeling like themselves — only brighter.</h2>
+        <p>DCUBE Salon was built on a simple idea: beauty services should feel personal, never rushed. With studios serving clients across India and Canada, we bring international styling standards to your everyday.</p>
+        <p>Whether you're walking down the aisle, refreshing your look, or treating the family, our team is here to make it effortless.</p>
+        <a href="/about" class="btn btn-outline" style="margin-top:12px;">More About Us</a>
+      </div>
+      <div class="reveal">
+        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80" alt="DCUBE salon interior" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-tight">
+    <div class="container stats reveal">
+      <div class="stat"><span class="num">12+</span><span class="lbl">Years of Craft</span></div>
+      <div class="stat"><span class="num">2</span><span class="lbl">Countries</span></div>
+      <div class="stat"><span class="num">5,000+</span><span class="lbl">Happy Clients</span></div>
+      <div class="stat"><span class="num">300+</span><span class="lbl">Bridal Looks</span></div>
+    </div>
+  </section>
+
+  <section class="section section-light">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Kind words</span>
+        <h2>Loved by brides and regulars alike.</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="testimonial reveal">
+          <blockquote>"They made my wedding day feel like a dream. The team listened to every detail and the look lasted from morning ceremony to late-night reception."</blockquote>
+          <div class="author">— Anjali R., Bride</div>
+        </div>
+        <div class="testimonial reveal">
+          <blockquote>"My family has been coming to DCUBE for years — kids' haircuts, my husband's grooming, and my own pampering. One stop for all of us."</blockquote>
+          <div class="author">— Priya M., Regular</div>
+        </div>
+        <div class="testimonial reveal">
+          <blockquote>"Honest pricing, modern styling, and that rare blend of skill and warmth. I wouldn't trust anyone else with my hair."</blockquote>
+          <div class="author">— Sneha K.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-strip">
+    <div class="container reveal">
+      <h2>Marriage is a big deal. Let's make it unforgettable.</h2>
+      <p>Reserve your bridal trial today — our calendar fills fast during wedding season.</p>
+      <a href="/contact" class="btn btn-light">Book a Trial</a>
+    </div>
+  </section>
+</Layout>
