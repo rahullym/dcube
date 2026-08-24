@@ -1,93 +1,278 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import PageHeader from "../components/PageHeader.astro";
+import Banner from "../components/Banner.astro";
+import Marquee from "../components/Marquee.astro";
 
-const categories = [
+const menu = [
   {
-    title: "Bridal & Special Occasion",
+    id: "facial",
+    title: "Facial",
+    room: "Facial Rooms",
     items: [
-      { name: "Bridal Makeup (HD)", price: "₹8,000+" },
-      { name: "Engagement / Reception Makeup", price: "₹6,000+" },
-      { name: "Pre-Bridal Package (4 sessions)", price: "₹12,000" },
-      { name: "Bridal Hair Styling", price: "₹3,500+" },
-      { name: "Saree / Lehenga Draping", price: "₹1,500" },
+      "Hydration Anti-Aging Treatment",
+      "Customized Facial",
+      "Shahnaz Gold Facial",
+      "Shahnaz Diamond Facial",
+      "Aroma Vitamin C Facial",
+      "Wine Facial",
+      "Hydra Facial",
+      "Rejuvenation Facial",
+      "Kaya Kalp Whitening",
+      "Tan Removal Facial",
+      "Shahnaz Basic",
+      "Aroma Basic",
+      "Basic Normal",
+      "D-Tan + Clean Up",
+      "Clean Up",
+      "D-Tan",
     ],
   },
   {
-    title: "Hair — Women",
+    id: "groom-makeup",
+    title: "Groom Makeup",
+    room: "Makeup Studio · VIP Suites",
     items: [
-      { name: "Hair Cut & Style", price: "₹600+" },
-      { name: "Global Color", price: "₹3,500+" },
-      { name: "Highlights / Balayage", price: "₹5,500+" },
-      { name: "Keratin / Smoothing", price: "₹6,000+" },
-      { name: "Hair Spa", price: "₹1,200" },
+      "Makeup HD",
+      "Makeup UHD",
+      "Makeup Ultra HD NARS",
+      "Makeup 4K",
+      "Makeup Bobbi Brown",
+      "Makeup Airbrush",
+      "Normal Touch Up",
+      "Advanced Touch Up",
     ],
   },
   {
-    title: "Hair — Men",
+    id: "special-service",
+    title: "Special Service",
+    room: "VIP Suites",
     items: [
-      { name: "Hair Cut", price: "₹500" },
-      { name: "Beard Trim & Shape", price: "₹300" },
-      { name: "Hair Color", price: "₹1,200+" },
-      { name: "Scalp Treatment", price: "₹900" },
-      { name: "Kids Cut (under 12)", price: "₹400" },
+      "Temporary Hair Fixing",
     ],
   },
   {
-    title: "Skin & Aesthetics",
+    id: "hair-cut-colour",
+    title: "Hair Cut & Colour",
+    room: "Hair Studio · Wash Lounge",
     items: [
-      { name: "Classic Clean-up", price: "₹800" },
-      { name: "Signature Facial", price: "₹1,800" },
-      { name: "Brightening Facial", price: "₹2,500" },
-      { name: "Anti-Aging Treatment", price: "₹3,500" },
-      { name: "Threading / Waxing", price: "₹100+" },
+      "Hair Cut",
+      "Hair Setting",
+      "Beard Setting",
+      "Hair Colour Black",
+      "Beard Colour",
+      "Hair Colour Shades Fashion",
+      "Highlights Hair Colour",
     ],
   },
   {
-    title: "Hands & Feet",
+    id: "spa",
+    title: "Spa",
+    room: "Hair Spa",
     items: [
-      { name: "Classic Manicure", price: "₹600" },
-      { name: "Spa Pedicure", price: "₹900" },
-      { name: "Gel / Extension Nails", price: "₹1,500+" },
-      { name: "Nail Art (per nail)", price: "₹100" },
+      "Normal Spa",
+      "Davins Spa",
+      "L'Oréal Spa",
+      "Anti-Dandruff Spa",
+      "Head Massage",
+      "Head Massage Hot Oil",
+      "Premium Hydrating Spa",
+      "Premium Anti-Dandruff Spa",
+      "Body Spa",
     ],
   },
   {
+    id: "hair-treatment",
+    title: "Hair Treatment",
+    room: "Treatment Room",
+    items: [
+      "Keratin Treatment",
+      "Hair Smoothing",
+      "Hair Straightening",
+      "Smoothing",
+      "Keratin",
+      "Botox",
+      "Nanoplastia",
+    ],
+  },
+  {
+    id: "hair-colour",
+    title: "Hair Colour",
+    room: "Wash Lounge · Colour Wall",
+    items: [
+      "Highlights Per Streaks",
+      "Gray Coverage",
+      "Balayage",
+      "Ombre",
+      "Root Touch",
+      "Baby Light Hair Colour",
+      "AirTouch Balayage",
+    ],
+  },
+  {
+    id: "threading",
+    title: "Threading",
+    room: "Facial Rooms",
+    items: [
+      "Eyebrow",
+      "Upper Lip",
+      "Chin",
+    ],
+  },
+  {
+    id: "haircut",
+    title: "Haircut",
+    room: "Hair Studio",
+    items: [
+      "Basic Haircut",
+      "Advanced Haircut",
+      "Customised Haircut",
+    ],
+  },
+  {
+    id: "premium-facial",
+    title: "Premium Facial",
+    room: "Facial Rooms",
+    items: [
+      "Vitamin C",
+      "Oxygluta Facial",
+      "Hydra Facial",
+      "Derma Facial",
+    ],
+  },
+  {
+    id: "skincare",
+    title: "Skincare",
+    room: "Facial Rooms",
+    items: [
+      "D-Tan",
+      "Bleach",
+      "Clean Up",
+      "Basic Facial",
+      "Fruit Facial",
+      "Bridal Glow",
+      "Pearl",
+      "Diamond",
+      "Skin Whitening",
+      "Corian Facial",
+    ],
+  },
+  {
+    id: "wax",
+    title: "Wax",
+    room: "Treatment Room",
+    items: [
+      "Rica Wax Full Body",
+      "Full Hand Wax",
+      "Full Leg Wax",
+      "Underarms",
+      "Upper Lip Wax",
+      "Chin Wax",
+      "Half Leg Wax",
+      "Half Hand Wax",
+    ],
+  },
+  {
+    id: "pedicure-manicure",
+    title: "Pedicure / Manicure",
+    room: "Nails & Photo Corner",
+    items: [
+      "Manicure",
+      "Normal Pedicure",
+      "Manicure Spa",
+      "Pedicure Spa",
+      "Basic Pedicure",
+      "Spa Pedicure",
+      "Premium Pedicure",
+      "Basic Manicure",
+      "Spa Manicure",
+      "Premium Manicure",
+      "Dry Pedicure",
+      "Dry Manicure",
+    ],
+  },
+  {
+    id: "makeup",
     title: "Makeup",
+    room: "Makeup Studio · Bridal Wardrobe",
     items: [
-      { name: "Party Makeup", price: "₹2,500+" },
-      { name: "HD Airbrush Makeup", price: "₹4,500" },
-      { name: "Family Function Package", price: "On request" },
-      { name: "Makeup Lesson (1 hr)", price: "₹2,000" },
+      "Guest Look Make-up",
+      "Bridal Basic Make-up",
+      "Bridal HD Make-up",
+      "Bridal SkinGlass Make-up",
+      "Bridal Airbrush Make-up",
+      "Bridal Airbrush with Glow Skin Make-up",
     ],
   },
 ];
+import { withBase } from "../lib/url";
 ---
-<Layout title="Services & Pricing — DCUBE Salon">
-  <PageHeader eyebrow="Our menu" title="Services & Pricing" description="A complete menu of beauty services — for brides, families, and everyone in between. Pricing is indicative; final cost depends on hair length and product choices." />
+<Layout
+  title="Services — D Cube Family Salon"
+  description="The full D Cube menu: facials, hair cut and colour, spa and treatment, makeup, threading, waxing, pedicure and manicure."
+>
+  <Banner
+    eyebrow="The menu"
+    title="Every service we offer."
+description="Listed in full, room by room. Rates depend on length, density and the products you choose — we confirm the price with you before we start."
+    next="clay"
+  />
 
-  <section class="section">
+  <Marquee />
+
+  <section class="section section-cream">
     <div class="container">
-      <div class="grid grid-2">
-        {categories.map(cat => (
-          <div class="service-list reveal">
-            <h3>{cat.title}</h3>
-            <ul>
-              {cat.items.map(it => (
-                <li><span>{it.name}</span><span>{it.price}</span></li>
-              ))}
-            </ul>
-          </div>
-        ))}
+      <div class="menu-layout">
+        <nav class="menu-rail" aria-label="Service categories">
+          {menu.map(m => <a href={`#${m.id}`}>{m.title}</a>)}
+        </nav>
+
+        <div>
+          {menu.map((m, i) => (
+            <section class="menu-block reveal" id={m.id}>
+              <h3>
+                <span class="idx">{String(i + 1).padStart(2, "0")}</span>
+                {m.title}
+              </h3>
+              <span class="eyebrow" style="margin-bottom:14px;">{m.room}</span>
+              <ul class="menu-cols">
+                {m.items.map(it => (
+                  <li><span class="name">{it}</span></li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="cta-strip">
+  <section class="section section-sand">
+    <div class="container">
+      <div class="split">
+        <figure class="arch reveal">
+          <img src={withBase("/interiors/treatment-02.jpg")} alt="The treatment room with halo-lit arched mirrors" loading="lazy" width="1536" height="1024" />
+          <figcaption class="caption">Treatment Room</figcaption>
+        </figure>
+        <div class="reveal d1">
+          <span class="eyebrow">Not sure what to book?</span>
+          <h2>Tell us the occasion. We'll build the package.</h2>
+          <p class="lead">A wedding morning, a first haircut, a monthly reset — send us the date and what it's for, and we'll come back with the services, the room and the time it takes.</p>
+          <div class="hero-actions" style="justify-content:flex-start; margin-top:26px;">
+            <a href={withBase("/contact")} class="btn btn-clay">Ask a Stylist</a>
+            <a href="tel:+919946007990" class="btn btn-outline">Call the Salon</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta plaster">
     <div class="container reveal">
-      <h2>Not sure what you need?</h2>
-      <p>Tell us about your occasion — we'll recommend the perfect package.</p>
-      <a href="/contact" class="btn btn-light">Talk to a Stylist</a>
+      <h2>Hold your slot.</h2>
+      <p>Weekends and wedding season fill first. A booking takes a minute.</p>
+      <div class="cta-actions">
+        <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
+      </div>
     </div>
   </section>
 </Layout>

@@ -1,64 +1,98 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import PageHeader from "../components/PageHeader.astro";
+import Banner from "../components/Banner.astro";
+import Marquee from "../components/Marquee.astro";
+
+const values = [
+  { icon: "◉", title: "One room, one purpose", copy: "A facial should not happen next to a hairdryer. Ten separate rooms mean every service gets the light, sound and privacy it needs." },
+  { icon: "✓", title: "Rates on the wall", copy: "Our full menu is published with prices. You will never be quoted a number after the service has already started." },
+  { icon: "✦", title: "Trained, then retrained", copy: "Our stylists and therapists train through the year, so what happens in your chair is current — not what was fashionable a decade ago." },
+];
+import { withBase } from "../lib/url";
 ---
-<Layout title="About — DCUBE Salon">
-  <PageHeader eyebrow="Our story" title="Beauty, made personal." description="Two studios. Two countries. One unwavering commitment to the people who walk through our doors." />
+<Layout
+  title="About — D Cube Family Salon"
+  description="How D Cube was built: ten purpose-drawn rooms in terracotta and cream, a family salon in Chalakudy with a second studio in Canada."
+>
+  <Banner
+    eyebrow="Our story"
+    title="Built room by room, on purpose."
+    description="D Cube began as a floor plan rather than a shopfront — ten rooms, each drawn around one thing it had to do well."
+    next="cream"
+  />
 
-  <section class="section">
-    <div class="container split">
-      <div class="reveal">
-        <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=900&q=80" alt="Stylist working on a bridal client" />
-      </div>
-      <div class="reveal">
-        <span class="eyebrow">Why DCUBE</span>
-        <h2>A salon built around how you feel, not just how you look.</h2>
-        <p>DCUBE began with a simple belief — that walking into a salon should feel less like a transaction and more like a ritual. Every chair, every conversation, every brush stroke is meant to leave you a little more yourself.</p>
-        <p>We're a small team of certified stylists, makeup artists, and aestheticians, trained across India and Canada. We invest in continuous learning so the techniques we bring to your chair are current with global trends — and we curate products our team would use on themselves.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-light">
+  <section class="section section-cream">
     <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">What guides us</span>
-        <h2>Our values</h2>
-      </div>
-      <div class="grid grid-3">
-        <div class="service-card reveal">
-          <div class="icon">♥</div>
-          <h3>Personal Care</h3>
-          <p>No two faces, hair types, or occasions are alike. We tailor every service to you.</p>
+      <div class="split">
+        <div class="stack reveal">
+          <div class="main">
+            <img src={withBase("/interiors/reception-02.jpg")} alt="Arched brand niches above the lobby benches" loading="lazy" width="1536" height="1024" />
+          </div>
+          <div class="inset">
+            <img src={withBase("/interiors/makeup-01.jpg")} alt="The makeup studio mirrors" loading="lazy" />
+          </div>
         </div>
-        <div class="service-card reveal">
-          <div class="icon">✓</div>
-          <h3>Honest Pricing</h3>
-          <p>Transparent menus. No surprise upsells. Real value for real budgets.</p>
-        </div>
-        <div class="service-card reveal">
-          <div class="icon">★</div>
-          <h3>Continuous Craft</h3>
-          <p>Our stylists train year-round so your look stays ahead of the trend, not behind it.</p>
+        <div class="reveal d1">
+          <span class="eyebrow">Why we built it this way</span>
+          <h2>A salon should feel like somewhere, not like a waiting room.</h2>
+          <p class="lead">Most salons grow by adding chairs to whatever space is left. We started at the other end — with a plan, an architect and a list of the ten rooms a family actually needs.</p>
+          <p>The result is a floor where a bride can spend a whole morning in a private suite, a child can have a first haircut without an audience, and someone in for a quiet facial never hears a hairdryer. The terracotta plaster, the lime-washed arches and the backlit mirrors came after — because a room you feel calm in is part of the service, not decoration on top of it.</p>
+          <a href={withBase("/gallery")} class="btn btn-outline mt-lg">Walk the Space</a>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section section-tight">
-    <div class="container stats reveal">
-      <div class="stat"><span class="num">12+</span><span class="lbl">Years of Craft</span></div>
-      <div class="stat"><span class="num">2</span><span class="lbl">Countries</span></div>
-      <div class="stat"><span class="num">5,000+</span><span class="lbl">Happy Clients</span></div>
-      <div class="stat"><span class="num">300+</span><span class="lbl">Bridal Looks</span></div>
+  <Marquee items={["Chalakudy, Kerala", "Canada", "Unisex", "Family Salon", "Bridal Specialists", "Ten Rooms"]} />
+
+  <section class="section section-sand">
+    <div class="container">
+      <div class="section-head centered reveal">
+        <span class="eyebrow centered">What guides us</span>
+        <h2>Three things we don't bend on.</h2>
+      </div>
+      <div class="niche-grid" data-stagger>
+        {values.map((v, i) => (
+          <article class={`niche reveal ${i === 1 ? "d1 filled" : i === 2 ? "d2" : ""}`}>
+            <div class="ico" aria-hidden="true">{v.icon}</div>
+            <h3>{v.title}</h3>
+            <p>{v.copy}</p>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
-  <section class="cta-strip">
+  <section class="section section-clay plaster">
+    <div class="container">
+      <div class="split reverse">
+        <figure class="arch reveal">
+          <img src={withBase("/interiors/facial-double.jpg")} alt="The double-bed facial room in sand plaster" loading="lazy" width="1536" height="1024" />
+          <figcaption class="caption">Facial Room</figcaption>
+        </figure>
+        <div class="reveal d1">
+          <span class="eyebrow">Two studios</span>
+          <h2>Chalakudy, and a chair in Canada.</h2>
+          <p class="lead">The main salon is in Chalakudy, Kerala. A smaller by-appointment studio in Canada serves clients who found us here and moved there — mostly bridal, mostly booked months out.</p>
+          <p>Between them, the same team, the same training and the same published rates.</p>
+          <div class="stat-band" style="margin-top:34px; background:rgba(250,238,220,0.06); border-color:rgba(250,238,220,0.14);">
+            <div class="stat" style="border-color:rgba(250,238,220,0.14);"><span class="num" style="color:var(--glow);">10</span><span class="lbl" style="color:rgba(233,214,194,0.6);">Rooms</span></div>
+            <div class="stat" style="border-color:rgba(250,238,220,0.14);"><span class="num" style="color:var(--glow);">2</span><span class="lbl" style="color:rgba(233,214,194,0.6);">Studios</span></div>
+            <div class="stat"><span class="num" style="color:var(--glow);">7</span><span class="lbl" style="color:rgba(233,214,194,0.6);">Days Open</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta plaster">
     <div class="container reveal">
-      <h2>Come say hello.</h2>
-      <p>Walk-ins welcome, but bookings get the best slots — especially on weekends.</p>
-      <a href="/contact" class="btn btn-light">Book an Appointment</a>
+      <h2>Come and say hello.</h2>
+      <p>Walk-ins are welcome. Bookings get the best slots, especially on weekends.</p>
+      <div class="cta-actions">
+        <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
+        <a href={withBase("/services")} class="btn btn-outline-cream">See the Menu</a>
+      </div>
     </div>
   </section>
 </Layout>

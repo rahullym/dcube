@@ -1,0 +1,35 @@
+---
+import type { Shot } from "../lib/work";
+
+interface Props {
+  icon: string;
+  title: string;
+  description: string;
+  price?: string;
+  filled?: boolean;
+  delay?: string;
+  media?: Shot;
+}
+const { icon, title, description, price, filled = false, delay = "", media } = Astro.props;
+import { withBase } from "../lib/url";
+---
+<article class={`niche reveal ${delay}${filled ? " filled" : ""}${media ? " has-media" : ""}`}>
+  {media && (
+    <figure class="niche-media">
+      <img
+        src={withBase(media.src)}
+        alt={media.alt}
+        class={media.stock ? "warm" : ""}
+        loading="lazy"
+        width="1200"
+        height="800"
+      />
+    </figure>
+  )}
+  <div class="niche-body">
+    <div class="ico" aria-hidden="true">{icon}</div>
+    <h3>{title}</h3>
+    <p>{description}</p>
+    {price && <span class="price">{price}</span>}
+  </div>
+</article>

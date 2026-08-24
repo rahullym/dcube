@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { ViewTransitions } from "astro:transitions";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
@@ -9,9 +10,11 @@ interface Props {
 }
 
 const {
-  title = "DCUBE Salon — Unisex Beauty, Bridal & Family Salon",
-  description = "DCUBE Salon offers expert bridal makeup, hair styling, and aesthetic services for the whole family. Dedicated beauty services at affordable rates.",
+  title = "D Cube Family Salon — Hair, Skin, Bridal & Makeup in Chalakudy",
+  description =
+    "A terracotta-and-cream family salon in Chalakudy. Hair studio, wash lounge, spa and treatment rooms, VIP suites, facial rooms, makeup studio and a bridal wardrobe — under one roof.",
 } = Astro.props;
+import { withBase } from "../lib/url";
 ---
 <!doctype html>
 <html lang="en">
@@ -21,10 +24,32 @@ const {
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#9A5133" />
+    <link rel="icon" type="image/png" href={withBase("/logo.png")} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL(withBase("/interiors/reception-01.jpg"), Astro.site).href} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prata&family=Jost:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <ViewTransitions />
+    <script is:inline>
+      // Scroll-reveal starts elements hidden. That only happens once this class
+      // is set, so if the reveal script never runs the page still renders in
+      // full rather than staying blank. The timeout is a second belt-and-braces
+      // in case the observer script fails after this point.
+      (function () {
+        var root = document.documentElement;
+        root.classList.add("reveal-on");
+        setTimeout(function () {
+          if (!window.__revealReady) root.classList.remove("reveal-on");
+        }, 4000);
+      })();
+    </script>
   </head>
   <body>
     <Header />

@@ -1,0 +1,46 @@
+---
+import { zones } from "../lib/zones";
+import { withBase } from "../lib/url";
+---
+<div class="rail-head reveal">
+  <div class="section-head" style="margin-bottom:0;">
+    <span class="eyebrow">Walk the floor</span>
+    <h2>Ten rooms, each built for one thing.</h2>
+    <p>The salon is zoned like a small house — a lobby to arrive in, a studio to be styled in, quiet rooms to be treated in, and a wardrobe to be dressed in.</p>
+  </div>
+  <div class="rail-nav">
+    <button class="rail-btn" id="rail-prev" aria-label="Previous rooms">←</button>
+    <button class="rail-btn" id="rail-next" aria-label="Next rooms">→</button>
+  </div>
+</div>
+
+<div class="zone-rail mt-lg" id="zone-rail" data-stagger>
+  {zones.map((z, i) => (
+    <a class="zone-card" href={withBase(`/gallery#${z.slug}`)}>
+      <figure>
+        <img src={withBase(z.image)} alt={z.name} loading="lazy" width="1536" height="1024" />
+      </figure>
+      <span class="zone-no">{String(i + 1).padStart(2, "0")}</span>
+      <h3>{z.name}</h3>
+      <p>{z.blurb}</p>
+    </a>
+  ))}
+</div>
+
+<script>
+  const initRail = () => {
+    const rail = document.getElementById("zone-rail");
+    if (!rail) return;
+    const step = () => ((rail.querySelector(".zone-card") as HTMLElement)?.offsetWidth ?? 300) + 26;
+    const bind = (id: string, dir: number) => {
+      const btn = document.getElementById(id);
+      if (!btn || btn.dataset.bound) return;
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", () => rail.scrollBy({ left: dir * step(), behavior: "smooth" }));
+    };
+    bind("rail-prev", -1);
+    bind("rail-next", 1);
+  };
+  initRail();
+  document.addEventListener("astro:page-load", initRail);
+</script>

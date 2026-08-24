@@ -1,90 +1,220 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import ServiceCard from "../components/ServiceCard.astro";
+import Marquee from "../components/Marquee.astro";
+import Niche from "../components/Niche.astro";
+import ZoneRail from "../components/ZoneRail.astro";
+import { getPlaceReviews } from "../lib/reviews";
+import { lookbook, serviceMedia } from "../lib/work";
+
+const place = await getPlaceReviews();
+const quotes = place.reviews.slice(0, 3);
+
+const shades = [
+  { hex: "#1C1512", name: "Natural Black" },
+  { hex: "#3B2318", name: "Espresso" },
+  { hex: "#5C3320", name: "Chestnut" },
+  { hex: "#7E4229", name: "Terracotta" },
+  { hex: "#9A5133", name: "Copper" },
+  { hex: "#B5713F", name: "Caramel" },
+  { hex: "#C99356", name: "Honey" },
+  { hex: "#DDB97E", name: "Champagne" },
+  { hex: "#8B7355", name: "Ash Mocha" },
+  { hex: "#6E4B6B", name: "Plum" },
+  { hex: "#7A2E38", name: "Merlot" },
+  { hex: "#B8B0A6", name: "Silver" },
+];
+import { withBase } from "../lib/url";
 ---
 <Layout>
-  <section class="hero">
-    <div class="container hero-inner">
-      <span class="eyebrow">Unisex · Bridal · Family Salon</span>
-      <h1>Dedicated beauty services for every celebration.</h1>
-      <p>From wedding-day makeovers to everyday self-care, DCUBE blends craft, comfort, and care — for you and your family.</p>
+  <!-- ============ HERO: an arched portal into the salon ============ -->
+  <section class="hero plaster">
+    <div class="container">
+      <span class="eyebrow centered">Chalakudy · Unisex Family Salon</span>
+      <h1>Step through the arch into the warm side of <em>getting ready</em>.</h1>
+      <p class="lead">Ten rooms of terracotta plaster and backlit mirrors — for a haircut, a facial, a full bridal morning, or all three on the same day.</p>
       <div class="hero-actions">
-        <a href="/contact" class="btn btn-light">Book an Appointment</a>
-        <a href="/services" class="btn btn-outline-light">Explore Services</a>
+        <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
+        <a href={withBase("/gallery")} class="btn btn-outline-cream">See the Space</a>
       </div>
+      {place.rating != null && place.totalRatings != null && (
+        <div class="hero-trust">
+          <span class="stars">★★★★★</span>
+          <span>{place.rating.toFixed(1)} from {place.totalRatings}+ Google reviews</span>
+        </div>
+      )}
     </div>
+
+    <div class="hero-portal">
+      <figure class="framed">
+        <img src={withBase("/interiors/reception-01.jpg")} alt="The D Cube reception desk and lit signage wall" width="1536" height="1024" fetchpriority="high" />
+      </figure>
+    </div>
+
   </section>
 
-  <section class="section">
+  <!-- ============ OPENING STATEMENT ============ -->
+  <section class="section section-overlap section-cream">
     <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">What we do</span>
-        <h2>Beauty, crafted with intention.</h2>
-        <p>A full-service salon experience — bridal, hair, skin, and grooming — delivered by stylists who treat every client like family.</p>
+      <div class="stat-band reveal">
+        <div class="stat"><span class="num">10</span><span class="lbl">Rooms</span></div>
+        <div class="stat"><span class="num">2</span><span class="lbl">Studios</span></div>
+        <div class="stat"><span class="num">7</span><span class="lbl">Days Open</span></div>
       </div>
-      <div class="grid grid-3">
-        <ServiceCard icon="✦" title="Bridal Makeover" description="Wedding-day makeup, hair, and pre-bridal packages tailored to your story." price="From ₹8,000" />
-        <ServiceCard icon="✂" title="Hair Studio" description="Cuts, color, smoothing, and styling for women, men, and kids." price="From ₹500" />
-        <ServiceCard icon="✿" title="Skin & Aesthetics" description="Facials, clean-ups, threading, and advanced skincare treatments." price="From ₹800" />
-      </div>
-      <div style="text-align:center; margin-top:48px;">
-        <a href="/services" class="btn btn-outline">View All Services</a>
+
+      <div class="split mt-lg" style="margin-top:clamp(56px,8vw,110px);">
+        <div class="stack reveal">
+          <div class="main">
+            <img src={withBase("/interiors/hair-01.jpg")} alt="Backlit organic mirrors along the hair studio wall" loading="lazy" width="1536" height="1024" />
+          </div>
+          <div class="inset">
+            <img src={withBase("/work/hair-styling.jpg")} alt="Hair being styled at the salon" class="warm" loading="lazy" />
+          </div>
+        </div>
+        <div class="reveal d1">
+          <span class="eyebrow">Why it feels different</span>
+          <h2>A salon designed as a place, not a queue.</h2>
+          <p class="lead">Most salons are one long room with chairs in it. D Cube was drawn as ten separate rooms — so a bride getting ready, a child getting a first haircut and someone in for a quiet facial never share the same air, noise or light.</p>
+          <p>Every mirror is backlit, every wall is hand-finished plaster, and every station has enough room around it that nobody has to squeeze past your chair.</p>
+          <a href={withBase("/about")} class="btn btn-outline mt-lg">Our Story</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section section-light">
-    <div class="container split">
-      <div class="reveal">
-        <span class="eyebrow">Our story</span>
-        <h2>Where every guest leaves feeling like themselves — only brighter.</h2>
-        <p>DCUBE Salon was built on a simple idea: beauty services should feel personal, never rushed. With studios serving clients across India and Canada, we bring international styling standards to your everyday.</p>
-        <p>Whether you're walking down the aisle, refreshing your look, or treating the family, our team is here to make it effortless.</p>
-        <a href="/about" class="btn btn-outline" style="margin-top:12px;">More About Us</a>
-      </div>
-      <div class="reveal">
-        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80" alt="DCUBE salon interior" />
-      </div>
-    </div>
-  </section>
+  <Marquee />
 
-  <section class="section section-tight">
-    <div class="container stats reveal">
-      <div class="stat"><span class="num">12+</span><span class="lbl">Years of Craft</span></div>
-      <div class="stat"><span class="num">2</span><span class="lbl">Countries</span></div>
-      <div class="stat"><span class="num">5,000+</span><span class="lbl">Happy Clients</span></div>
-      <div class="stat"><span class="num">300+</span><span class="lbl">Bridal Looks</span></div>
-    </div>
-  </section>
-
-  <section class="section section-light">
+  <!-- ============ THE ROOMS ============ -->
+  <section class="section section-sand">
     <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">Kind words</span>
-        <h2>Loved by brides and regulars alike.</h2>
+      <ZoneRail />
+    </div>
+  </section>
+
+  <!-- ============ THE WORK ============ -->
+  <section class="section section-cream">
+    <div class="container">
+      <div class="section-head centered reveal">
+        <span class="eyebrow centered">The work</span>
+        <h2>What leaves the chair.</h2>
+        <p>Cuts, colour, bridal mornings, grooming and nails — the reason the rooms exist.</p>
       </div>
-      <div class="grid grid-3">
-        <div class="testimonial reveal">
-          <blockquote>"They made my wedding day feel like a dream. The team listened to every detail and the look lasted from morning ceremony to late-night reception."</blockquote>
-          <div class="author">— Anjali R., Bride</div>
-        </div>
-        <div class="testimonial reveal">
-          <blockquote>"My family has been coming to DCUBE for years — kids' haircuts, my husband's grooming, and my own pampering. One stop for all of us."</blockquote>
-          <div class="author">— Priya M., Regular</div>
-        </div>
-        <div class="testimonial reveal">
-          <blockquote>"Honest pricing, modern styling, and that rare blend of skill and warmth. I wouldn't trust anyone else with my hair."</blockquote>
-          <div class="author">— Sneha K.</div>
+      <div class="lookbook reveal">
+        {lookbook.map(l => (
+          <figure class="look">
+            <img src={withBase(l.src)} alt={l.alt} class={l.stock ? "warm" : ""} loading="lazy" width="1200" height="800" />
+            <figcaption>{l.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="section section-sand">
+    <div class="container">
+      <div class="section-head centered reveal">
+        <span class="eyebrow centered">What we do</span>
+        <h2>Everything the family needs, under one roof.</h2>
+        <p>Six service houses, priced honestly and listed in full — no consultation required to find out what something costs.</p>
+      </div>
+      <div class="niche-grid" data-stagger>
+        <Niche icon="✦" title="Bridal & Occasion" description="HD and airbrush bridal makeup, pre-bridal courses, draping, and a wardrobe of gowns and lehengas next door." media={serviceMedia.bridal} />
+        <Niche icon="✂" title="Hair Studio" description="Cuts, global colour, balayage, keratin and smoothing — for women, men and kids." filled={true} delay="d1" media={serviceMedia.hair} />
+        <Niche icon="❋" title="Skin & Facials" description="Clean-ups, brightening and anti-ageing facials, peels and threading in dedicated rooms." delay="d2" media={serviceMedia.skin} />
+        <Niche icon="◐" title="Hair Spa & Treatment" description="Scalp therapy, spa rituals and botox treatments in the low-lit treatment room." delay="d1" media={serviceMedia.spa} />
+        <Niche icon="✧" title="Makeup Studio" description="Party and event makeup, one-to-one lessons, and a lit photo corner to leave with pictures." delay="d2" media={serviceMedia.makeup} />
+        <Niche icon="◇" title="Nails" description="Manicures, spa pedicures, gel extensions and nail art at the bar beside the studio." delay="d3" media={serviceMedia.nails} />
+      </div>
+      <div class="center mt-lg">
+        <a href={withBase("/services")} class="btn btn-clay">See the Full Service Menu</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE COLOUR WALL ============ -->
+  <section class="section section-clay plaster">
+    <div class="container">
+      <div class="split reverse">
+        <figure class="arch reveal">
+          <img src={withBase("/interiors/wash-lounge.jpg")} alt="Reclining wash basins beneath the Choose Your Shade colour wall" loading="lazy" width="1536" height="1024" />
+          <figcaption class="caption">The Wash Lounge</figcaption>
+        </figure>
+        <div class="reveal d1">
+          <span class="eyebrow">Choose your shade</span>
+          <h2>A colour wall, not a colour book.</h2>
+          <p class="lead">Above the wash basins sits a wall of every shade we stock. You pick against your own skin in the room's real light — not from a laminated card under a fluorescent tube.</p>
+          <div class="shade-strip">
+            {shades.map(s => (
+              <span class="swatch" style={`background:${s.hex}`} data-name={s.name} title={s.name}></span>
+            ))}
+          </div>
+          <a href={withBase("/services#hair-colour")} class="btn btn-outline-cream mt-lg">Colour & Highlight Services</a>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="cta-strip">
+  <!-- ============ BRIDAL ============ -->
+  <section class="section section-sand">
+    <div class="container">
+      <div class="split">
+        <figure class="arch reveal">
+          <img src={withBase("/interiors/bridal-01.jpg")} alt="The bridal wardrobe storefront with D Cube signage" loading="lazy" width="1536" height="1024" />
+          <figcaption class="caption">Bridal Wardrobe</figcaption>
+        </figure>
+        <div class="reveal d1">
+          <span class="eyebrow">For the big morning</span>
+          <h2>Get ready and get dressed in the same building.</h2>
+          <p class="lead">The bridal wardrobe opens straight off the salon floor. Trial your makeup, book the VIP suite for the morning itself, and pick the outfit without driving anywhere in between.</p>
+          <p>Wedding-season Saturdays book out weeks ahead — a trial is the fastest way to hold your date.</p>
+          <div class="hero-actions" style="justify-content:flex-start; margin-top:26px;">
+            <a href={withBase("/contact")} class="btn btn-clay">Book a Bridal Trial</a>
+            <a href={withBase("/gallery#bridal")} class="btn btn-outline">See the Wardrobe</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REVIEWS ============ -->
+  {quotes.length > 0 && (
+  <section class="section section-cream">
+    <div class="container">
+      <div class="section-head centered reveal">
+        <span class="eyebrow centered">
+          {place.rating != null && place.totalRatings != null
+            ? `${place.rating.toFixed(1)} ★ · ${place.totalRatings}+ Google reviews`
+            : "In our guests' words"}
+        </span>
+        <h2>What Chalakudy says.</h2>
+      </div>
+      <div class="quote-grid" data-stagger>
+        {quotes.map((r, i) => (
+          <figure class={`quote reveal ${i === 1 ? "d1" : i === 2 ? "d2" : ""}`}>
+            <div class="mark" aria-hidden="true">“</div>
+            <div class="rate" aria-label={`${r.rating} out of 5`}>{"★".repeat(Math.round(r.rating))}</div>
+            <blockquote>{r.text}</blockquote>
+            <figcaption class="who">{r.author}{r.relativeTime ? ` · ${r.relativeTime}` : ""}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <div class="center mt-lg">
+        <a href="https://www.google.com/maps/place/?q=place_id:ChIJYSspWmwCCDsR0xCaMNPVWWA" target="_blank" rel="noopener" class="btn btn-outline">Read All Reviews on Google</a>
+      </div>
+    </div>
+  </section>
+  )}
+
+  <!-- ============ CTA ============ -->
+  <section class="cta plaster">
     <div class="container reveal">
-      <h2>Marriage is a big deal. Let's make it unforgettable.</h2>
-      <p>Reserve your bridal trial today — our calendar fills fast during wedding season.</p>
-      <a href="/contact" class="btn btn-light">Book a Trial</a>
+      <span class="eyebrow centered">Open Mon – Sat, 10am – 8pm</span>
+      <h2>Come and see the room in person.</h2>
+      <p>Walk-ins are welcome. Bookings get the chair, the hour and the room you actually wanted.</p>
+      <div class="cta-actions">
+        <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
+        <a href="tel:+919946007990" class="btn btn-outline-cream">+91 99460 07990</a>
+      </div>
     </div>
   </section>
 </Layout>

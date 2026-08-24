@@ -1,0 +1,17 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  /** Background of the section that follows, so the threshold notch matches it. */
+  next?: "cream" | "sand" | "clay";
+}
+const { eyebrow, title, description, next = "cream" } = Astro.props;
+---
+<section class={`banner plaster next-${next}`}>
+  <div class="container-narrow">
+    {eyebrow && <span class="eyebrow centered">{eyebrow}</span>}
+    <h1>{title}</h1>
+    {description && <p class="lead">{description}</p>}
+  </div>
+</section>

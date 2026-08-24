@@ -1,29 +1,80 @@
 ---
+import { withBase } from "../lib/url";
 const { pathname } = Astro.url;
-const isActive = (href: string) => (pathname === href || (href !== "/" && pathname.startsWith(href))) ? "active" : "";
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/services", label: "Services" },
+  { href: "/gallery", label: "The Space" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Visit" },
+];
+// Astro.url.pathname carries the base prefix (/dcube/about) while the link
+// data does not, so normalise before comparing or nothing ever reads active.
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith("/") ? rawBase.slice(0, -1) : rawBase;
+const path = (pathname.startsWith(base) ? pathname.slice(base.length) : pathname) || "/";
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
 ---
-<header class="site-header">
-  <div class="container nav">
-    <a href="/" class="brand">D<span>CUBE</span></a>
+<header class="site-header" id="site-header" transition:name="site-header">
+  <div class="nav-shell">
+    <a href={withBase("/")} class="brand" aria-label="D Cube Family Salon">
+      <img src={withBase("/logo-mark.png")} alt="D Cube Family Salon" />
+    </a>
     <ul class="nav-links">
-      <li><a href="/" class={isActive("/")}>Home</a></li>
-      <li><a href="/services" class={isActive("/services")}>Services</a></li>
-      <li><a href="/about" class={isActive("/about")}>About</a></li>
-      <li><a href="/gallery" class={isActive("/gallery")}>Gallery</a></li>
-      <li><a href="/contact" class={isActive("/contact")}>Contact</a></li>
+      {links.map(l => (
+        <li><a href={withBase(l.href)} class={isActive(l.href) ? "active" : ""}>{l.label}</a></li>
+      ))}
     </ul>
-    <div class="nav-cta">
-      <a href="/contact" class="btn btn-primary">Book Now</a>
-      <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
-    </div>
+    <a href={withBase("/contact")} class="btn btn-clay btn-sm">Book a Chair</a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
+<nav class="mobile-menu" id="mobile-menu" aria-label="Mobile">
+  {links.map(l => <a href={withBase(l.href)}>{l.label}</a>)}
+  <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
+</nav>
+
 <script>
-  const toggle = document.querySelector(".menu-toggle");
-  const links = document.querySelector(".nav-links");
-  if (toggle && links) {
-    toggle.addEventListener("click", () => links.classList.toggle("open"));
-    links.querySelectorAll("a").forEach(a => a.addEventListener("click", () => links.classList.remove("open")));
-  }
+  // Window-level listeners are attached once; everything that touches the DOM
+  // is re-bound on every navigation, since View Transitions swap the document
+  // without re-running module scripts.
+  const syncHeader = () =>
+    document.getElementById("site-header")?.classList.toggle("scrolled", window.scrollY > 20);
+
+  const setMenu = (open: boolean) => {
+    const menu = document.getElementById("mobile-menu");
+    const toggle = document.getElementById("menu-toggle");
+    menu?.classList.toggle("open", open);
+    toggle?.classList.toggle("open", open);
+    toggle?.setAttribute("aria-expanded", String(open));
+    toggle?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    document.body.style.overflow = open ? "hidden" : "";
+  };
+
+  window.addEventListener("scroll", syncHeader, { passive: true });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") setMenu(false); });
+
+  const initHeader = () => {
+    document.body.style.overflow = "";
+    syncHeader();
+
+    const toggle = document.getElementById("menu-toggle");
+    if (toggle && !toggle.dataset.bound) {
+      toggle.dataset.bound = "1";
+      toggle.addEventListener("click", () =>
+        setMenu(!document.getElementById("mobile-menu")?.classList.contains("open")));
+    }
+    document.querySelectorAll<HTMLElement>("#mobile-menu a").forEach(a => {
+      if (a.dataset.bound) return;
+      a.dataset.bound = "1";
+      a.addEventListener("click", () => setMenu(false));
+    });
+  };
+
+  initHeader();
+  document.addEventListener("astro:page-load", initHeader);
 </script>

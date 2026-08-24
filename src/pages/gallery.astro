@@ -1,42 +1,95 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import PageHeader from "../components/PageHeader.astro";
+import Banner from "../components/Banner.astro";
+import { zones, shots } from "../lib/zones";
 
-const images = [
-  { src: "https://images.unsplash.com/photo-1595944954678-7fdf63d6a09b?auto=format&fit=crop&w=800&q=80", alt: "Bridal makeup look" },
-  { src: "https://images.unsplash.com/photo-1560869713-7d0a29430803?auto=format&fit=crop&w=800&q=80", alt: "Hair styling" },
-  { src: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80", alt: "Salon interior" },
-  { src: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&w=800&q=80", alt: "Hair color treatment" },
-  { src: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80", alt: "Makeup artistry" },
-  { src: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80", alt: "Mens grooming" },
-  { src: "https://images.unsplash.com/photo-1571875257727-256c39da42af?auto=format&fit=crop&w=800&q=80", alt: "Skin treatment" },
-  { src: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80", alt: "Bridal jewelry detail" },
-  { src: "https://images.unsplash.com/photo-1519415943484-9fa1873496d4?auto=format&fit=crop&w=800&q=80", alt: "Hair styling in progress" },
-  { src: "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=800&q=80", alt: "Manicure" },
-  { src: "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=800&q=80", alt: "Bridal hair updo" },
-  { src: "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?auto=format&fit=crop&w=800&q=80", alt: "Facial treatment" },
-];
+const zoneName = Object.fromEntries(zones.map(z => [z.slug, z.name]));
+import { withBase } from "../lib/url";
 ---
-<Layout title="Gallery — DCUBE Salon">
-  <PageHeader eyebrow="Our work" title="Looks we've loved." description="A glimpse into recent brides, transformations, and quiet moments from inside the studio." />
+<Layout
+  title="The Space — D Cube Family Salon"
+  description="Walk the D Cube floor: reception and lobby, hair studio, wash lounge, hair spa, treatment room, VIP suites, facial rooms, makeup studio, nail bar and the bridal wardrobe."
+>
+  <Banner
+    eyebrow="Interior views"
+    title="The space, room by room."
+    description="Terracotta plaster, lime-washed arches and backlit mirrors, drawn for us by Ar. Sneha Raju. Tap any view to enlarge."
+    next="sand"
+  />
 
-  <section class="section">
-    <div class="container">
-      <div class="gallery reveal">
-        {images.map(img => (
-          <div class="gallery-item">
-            <img src={img.src} alt={img.alt} data-full={img.src.replace("w=800", "w=1600")} loading="lazy" />
-          </div>
+  <section class="section section-sand">
+    <div class="container-wide">
+      <div class="filter-bar reveal" role="group" aria-label="Filter by room">
+        <button class="chip active" data-filter="all">All Rooms</button>
+        {zones.map(z => <button class="chip" data-filter={z.slug}>{z.name}</button>)}
+      </div>
+
+      <div class="masonry" id="masonry" data-stagger>
+        {shots.map(s => (
+          <figure class="shot" data-zone={s.zone} tabindex="0" role="button" aria-label={`Enlarge: ${s.alt}`}>
+            <img src={withBase(s.src)} alt={s.alt} loading="lazy" width="1536" height="1024" />
+            <figcaption>{zoneName[s.zone]}</figcaption>
+          </figure>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="cta-strip">
-    <div class="container reveal">
-      <h2>Want to be next?</h2>
-      <p>Book a consultation and let's design a look that's unmistakably yours.</p>
-      <a href="/contact" class="btn btn-light">Book Now</a>
+  <section class="section section-cream">
+    <div class="container">
+      <div class="section-head centered reveal">
+        <span class="eyebrow centered">The floor plan</span>
+        <h2>What happens where.</h2>
+      </div>
+      <div class="niche-grid" data-stagger>
+        {zones.map((z, i) => (
+          <article class={`niche reveal ${i % 3 === 1 ? "d1" : i % 3 === 2 ? "d2" : ""}${i % 4 === 1 ? " filled" : ""}`}>
+            <div class="ico" aria-hidden="true">{String(i + 1).padStart(2, "0")}</div>
+            <h3>{z.name}</h3>
+            <p>{z.blurb}</p>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
+
+  <section class="cta plaster">
+    <div class="container reveal">
+      <h2>Pictures are one thing.</h2>
+      <p>The plaster, the light and the quiet are another. Come and stand in it.</p>
+      <div class="cta-actions">
+        <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
+        <a href={withBase("/services")} class="btn btn-outline-cream">See the Menu</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const initFilters = () => {
+      const chips = document.querySelectorAll<HTMLButtonElement>(".chip");
+      const shots = document.querySelectorAll<HTMLElement>(".shot");
+      if (!chips.length) return;
+
+      const apply = (filter: string) => {
+        shots.forEach(s => s.classList.toggle("hidden", filter !== "all" && s.dataset.zone !== filter));
+        chips.forEach(c => c.classList.toggle("active", c.dataset.filter === filter));
+      };
+
+      chips.forEach(c => {
+        if (c.dataset.bound) return;
+        c.dataset.bound = "1";
+        c.addEventListener("click", () => {
+          const f = c.dataset.filter || "all";
+          apply(f);
+          history.replaceState(null, "", f === "all" ? location.pathname : `#${f}`);
+        });
+      });
+
+      // Deep links from the home-page room rail: /gallery#vip
+      const hash = location.hash.slice(1);
+      if (hash && document.querySelector(`.chip[data-filter="${hash}"]`)) apply(hash);
+    };
+    initFilters();
+    document.addEventListener("astro:page-load", initFilters);
+  </script>
 </Layout>

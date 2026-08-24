@@ -1,0 +1,61 @@
+---
+// Only channels we have real, confirmed details for. Nothing invented.
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+
+const links = [
+  { key: "instagram", label: "Instagram", href: "https://www.instagram.com/dcube_unisexsalon/", external: true },
+  { key: "whatsapp",  label: "WhatsApp",  href: "https://wa.me/919946007990", external: true },
+  { key: "phone",     label: "Call the salon", href: "tel:+919946007990", external: false },
+  { key: "email",     label: "Email us",  href: "mailto:hello@dcubesalon.com", external: false },
+  { key: "map",       label: "Find us on Google Maps", href: "https://www.google.com/maps/place/?q=place_id:ChIJYSspWmwCCDsR0xCaMNPVWWA", external: true },
+];
+---
+<ul class={`social-row${compact ? " compact" : ""}`} data-stagger>
+  {links.map(l => (
+    <li class="reveal">
+      <a
+        class="social-btn"
+        href={l.href}
+        aria-label={l.label}
+        title={l.label}
+        {...(l.external ? { target: "_blank", rel: "noopener" } : {})}
+      >
+        {l.key === "instagram" && (
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.7" />
+            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7" />
+            <circle cx="17.3" cy="6.7" r="1.15" fill="currentColor" />
+          </svg>
+        )}
+        {l.key === "whatsapp" && (
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12.04 2.5A9.4 9.4 0 0 0 2.63 11.9c0 1.99.52 3.93 1.52 5.64L2.5 21.5l4.1-1.62a9.36 9.36 0 0 0 4.44 1.13h.01a9.4 9.4 0 0 0 0-18.51Z"
+                  fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M9.2 8.1c-.16-.37-.33-.34-.5-.35h-.44c-.15 0-.4.06-.6.28-.21.23-.79.77-.79 1.88s.81 2.18.92 2.33c.12.15 1.6 2.44 3.87 3.42.54.23.96.37 1.29.48.54.17 1.03.15 1.42.09.43-.06 1.34-.55 1.53-1.08.19-.53.19-.98.13-1.08-.05-.1-.2-.15-.43-.27-.23-.11-1.34-.66-1.55-.73-.2-.08-.36-.11-.5.11-.15.23-.58.73-.71.88-.13.15-.26.17-.49.06-.23-.12-.96-.36-1.83-1.13-.68-.6-1.13-1.35-1.27-1.58-.13-.22-.01-.35.1-.46.1-.1.23-.26.35-.39.11-.13.15-.23.23-.38.08-.15.04-.29-.02-.4-.06-.12-.5-1.22-.71-1.68Z"
+                  fill="currentColor" />
+          </svg>
+        )}
+        {l.key === "phone" && (
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M7.6 10.9a12.6 12.6 0 0 0 5.5 5.5l1.9-1.9c.25-.25.6-.33.9-.2 1 .35 2.1.55 3.2.55.5 0 .9.4.9.9v3c0 .5-.4.9-.9.9C10.7 19.65 4.35 13.3 4.35 4.9c0-.5.4-.9.9-.9h3c.5 0 .9.4.9.9 0 1.1.2 2.2.55 3.2.1.3.03.65-.2.9l-1.9 1.9Z"
+                  fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          </svg>
+        )}
+        {l.key === "email" && (
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+            <path d="m3.8 7.2 7.3 5.1a1.6 1.6 0 0 0 1.8 0l7.3-5.1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+        )}
+        {l.key === "map" && (
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 2.8a6.7 6.7 0 0 0-6.7 6.7c0 4.9 6.7 11.7 6.7 11.7s6.7-6.8 6.7-11.7A6.7 6.7 0 0 0 12 2.8Z"
+                  fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <circle cx="12" cy="9.4" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+          </svg>
+        )}
+      </a>
+    </li>
+  ))}
+</ul>

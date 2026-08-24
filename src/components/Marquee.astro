@@ -1,0 +1,15 @@
+---
+interface Props { items?: string[]; }
+const {
+  items = [
+    "Hair Studio", "Wash Lounge", "Hair Spa", "Keratin & Botox", "VIP Suites",
+    "Facials & Peels", "Makeup Studio", "Nail Bar", "Bridal Wardrobe", "Kids Cuts",
+  ],
+} = Astro.props;
+const doubled = [...items, ...items];
+---
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    {doubled.map(i => <span>{i}</span>)}
+  </div>
+</div>
