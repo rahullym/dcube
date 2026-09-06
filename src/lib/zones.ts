@@ -1,5 +1,4 @@
-// The salon floor, room by room — mirrors the built interior
-// (Ar. Sneha Raju, final interior views, Jan 2026).
+// The salon floor, room by room — mirrors the built interior.
 
 export interface Zone {
   slug: string;

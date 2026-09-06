@@ -244,54 +244,140 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 /* ============================================================
-   HERO — a terracotta room you look into through an arch
+   HERO — a lit terracotta room: the work on one side,
+   the invitation on the other
    ============================================================ */
 .hero {
   position: relative;
-  background: var(--terracotta-600);
+  /* Depth instead of a flat field: a warm backlight behind the
+     portraits, top right, falling away to shadow bottom left. */
+  background:
+    radial-gradient(105% 80% at 76% 6%, rgba(255, 201, 143, 0.34), transparent 62%),
+    radial-gradient(85% 75% at 4% 100%, rgba(46, 27, 18, 0.5), transparent 66%),
+    linear-gradient(158deg, var(--terracotta-500) 0%, var(--terracotta-600) 46%, var(--clay-800) 100%);
   color: var(--cream);
-  padding: clamp(150px, 20vw, 210px) 0 0;
-  text-align: center;
+  padding: clamp(132px, 15vw, 176px) 0 clamp(72px, 9vw, 116px);
   overflow: hidden;
 }
-.hero h1 { color: var(--cream-hi); max-width: 16ch; margin-inline: auto; text-wrap: balance; }
-.hero h1 em { font-style: italic; color: var(--glow); }
-.hero p { color: rgba(250,238,220,0.82); max-width: 560px; margin-inline: auto; }
-.hero .eyebrow { color: var(--glow); }
-.hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
-.hero-trust {
-  display: inline-flex; align-items: center; gap: 10px;
-  margin-top: 30px;
-  font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: rgba(250,238,220,0.7);
-}
-.hero-trust .stars { color: var(--glow); letter-spacing: 0.1em; }
-
-/* The portal: an arched window cut into the wall, overlapping
-   the section below so you appear to step through it. */
-.hero-portal {
-  position: relative;
-  max-width: 940px;
-  margin: clamp(48px, 7vw, 80px) auto calc(var(--section) * -0.62);
-  padding-inline: var(--gutter);
-}
-.hero-portal figure {
-  margin: 0;
+/* A doorway drawn on the wall, the same arch as every frame on the site */
+.hero::after {
+  content: "";
+  position: absolute; z-index: 0;
+  left: 50%; top: 9%;
+  width: min(1080px, 92vw); aspect-ratio: 1 / 1.2;
+  transform: translateX(-50%);
+  border: 1px solid rgba(250, 238, 220, 0.11);
   border-radius: var(--arch);
-  overflow: hidden;
-  box-shadow: var(--lift-lg), 0 0 90px -20px rgba(255,201,143,0.5);
-  border: 1px solid rgba(250,238,220,0.2);
+  pointer-events: none;
 }
-.hero-portal img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
-/* A portrait of the work reads as a salon; a wide empty room reads as a brochure */
-.hero-portal.portrait { max-width: 480px; }
-.hero-portal.portrait img { aspect-ratio: 4 / 5; }
-.hero-portal::before {
-  content: ""; position: absolute;
-  left: 50%; top: -6%; transform: translateX(-50%);
-  width: min(84%, 760px); height: 60%;
-  background: radial-gradient(closest-side, rgba(255,201,143,0.4), transparent 75%);
-  filter: blur(30px); pointer-events: none;
+
+.hero-inner {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+  align-items: center;
+  gap: clamp(40px, 5vw, 76px);
+}
+
+.hero-copy { text-align: left; }
+.hero .eyebrow { color: var(--glow); }
+.hero h1 {
+  color: var(--cream-hi);
+  font-size: clamp(2.5rem, 4.7vw, 4.15rem);
+  max-width: 14ch;
+  text-wrap: balance;
+}
+.hero h1 em { font-style: italic; color: var(--glow); }
+.hero .lead { color: rgba(250, 238, 220, 0.84); max-width: 46ch; margin-bottom: 0; }
+.hero-copy .hero-actions { justify-content: flex-start; }
+.hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
+
+/* The three things a walk-in wants to know, set as a hairline ledger */
+.hero-facts {
+  display: flex; flex-wrap: wrap; gap: 10px 28px;
+  list-style: none;
+  margin: clamp(30px, 4vw, 42px) 0 0; padding-top: clamp(22px, 3vw, 28px);
+  border-top: 1px solid rgba(250, 238, 220, 0.18);
+  font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(250, 238, 220, 0.72);
+}
+.hero-facts li { display: inline-flex; align-items: center; gap: 9px; }
+.hero-facts li::before {
+  content: "✦"; color: var(--glow); font-size: 0.72em; letter-spacing: 0;
+}
+
+/* ---------- The portraits: a tall arch with a second look tucked in ---------- */
+.hero-art {
+  position: relative;
+  justify-self: end;
+  width: min(100%, 460px);
+  padding: 0 0 clamp(26px, 4vw, 44px) clamp(24px, 4vw, 52px);
+}
+/* the backlight every mirror in the salon has */
+.hero-art::before {
+  content: "";
+  position: absolute; z-index: -1;
+  inset: -14% -10% 2% 0;
+  background: radial-gradient(closest-side, rgba(255, 201, 143, 0.45), transparent 74%);
+  filter: blur(34px);
+  pointer-events: none;
+}
+.hero-frame { margin: 0; overflow: hidden; background: var(--clay-800); }
+.hero-frame img { width: 100%; display: block; object-fit: cover; }
+.hero-frame-main {
+  border-radius: var(--arch);
+  border: 1px solid rgba(250, 238, 220, 0.22);
+  box-shadow: var(--lift-lg), 0 0 90px -20px rgba(255, 201, 143, 0.55);
+}
+.hero-frame-main img { aspect-ratio: 4 / 5; object-position: 50% 22%; }
+.hero-frame-inset {
+  position: absolute; left: 0; bottom: 0;
+  width: clamp(122px, 36%, 176px);
+  border: 5px solid var(--cream);
+  border-radius: var(--arch-niche);
+  box-shadow: var(--lift-md);
+}
+.hero-frame-inset img { aspect-ratio: 3 / 4; object-position: 50% 20%; }
+
+.hero-badge {
+  position: absolute; z-index: 2;
+  top: clamp(16px, 3vw, 30px); right: calc(-1 * clamp(0px, 1.6vw, 22px));
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 10px 18px;
+  background: rgba(250, 238, 220, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--clay-800);
+  border-radius: var(--pill);
+  box-shadow: var(--lift-md);
+  font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  white-space: nowrap;
+}
+.hero-badge .stars { color: var(--terracotta-500); letter-spacing: 0.06em; font-size: 0.7rem; }
+.hero-badge strong { font-family: var(--display); font-size: 1.05rem; letter-spacing: 0; }
+
+/* ---------- Hero, stacked ---------- */
+@media (max-width: 980px) {
+  .hero { padding-top: clamp(122px, 21vw, 160px); }
+  .hero-inner { grid-template-columns: 1fr; gap: clamp(44px, 7vw, 64px); }
+  .hero-copy { text-align: center; }
+  .hero h1, .hero .lead { margin-inline: auto; }
+  .hero-copy .hero-actions, .hero-facts { justify-content: center; }
+  .hero .eyebrow { justify-content: center; }
+  .hero .eyebrow::after {
+    content: ""; width: 26px; height: 1px; background: currentColor; opacity: .7;
+  }
+  .hero-art { justify-self: center; width: min(100%, 400px); }
+  .hero::after { display: none; }
+}
+@media (max-width: 480px) {
+  .hero-art { padding-left: 30px; padding-bottom: 20px; }
+  .hero-frame-inset { width: 112px; border-width: 4px; }
+  .hero-badge {
+    top: auto; bottom: 6px; right: -2px;
+    padding: 8px 14px; font-size: 0.56rem; gap: 7px;
+  }
+  .hero-facts { gap: 8px 18px; font-size: 0.6rem; letter-spacing: 0.14em; }
 }
 
 /* ---------- Marquee — the "choose your shade" ribbon ---------- */
@@ -827,15 +913,17 @@ img { max-width: 100%; height: auto; display: block; }
   0%, 100% { opacity: .65; }
   50%      { opacity: 1; }
 }
-.hero > .container > * { animation: rise-in 1s var(--ease) backwards; }
-.hero > .container > *:nth-child(1) { animation-delay: .05s; }
-.hero > .container > *:nth-child(2) { animation-delay: .15s; }
-.hero > .container > *:nth-child(3) { animation-delay: .25s; }
-.hero > .container > *:nth-child(4) { animation-delay: .35s; }
-.hero > .container > *:nth-child(5) { animation-delay: .45s; }
-.hero-portal { animation: arch-open 1.3s var(--ease) .4s backwards; }
-/* The mirrors in the salon are backlit; the portal breathes the same way */
-.hero-portal::before { animation: backlight 7s ease-in-out 1.6s infinite; }
+.hero-copy > * { animation: rise-in 1s var(--ease) backwards; }
+.hero-copy > *:nth-child(1) { animation-delay: .05s; }
+.hero-copy > *:nth-child(2) { animation-delay: .15s; }
+.hero-copy > *:nth-child(3) { animation-delay: .25s; }
+.hero-copy > *:nth-child(4) { animation-delay: .35s; }
+.hero-copy > *:nth-child(5) { animation-delay: .45s; }
+.hero-frame-main { animation: arch-open 1.3s var(--ease) .3s backwards; }
+.hero-frame-inset { animation: arch-open 1.1s var(--ease) .75s backwards; }
+.hero-badge { animation: rise-in .9s var(--ease) 1s backwards; }
+/* The mirrors in the salon are backlit; the hero breathes the same way */
+.hero-art::before { animation: backlight 7s ease-in-out 1.4s infinite; }
 
 .banner > .container-narrow > * { animation: rise-in .9s var(--ease) backwards; }
 .banner > .container-narrow > *:nth-child(1) { animation-delay: .05s; }
@@ -862,9 +950,11 @@ img { max-width: 100%; height: auto; display: block; }
   .reveal-on .reveal .main img {
     opacity: 1; transform: none; transition: none;
   }
-  .hero > .container > *,
-  .hero-portal,
-  .hero-portal::before,
+  .hero-copy > *,
+  .hero-frame-main,
+  .hero-frame-inset,
+  .hero-badge,
+  .hero-art::before,
   .banner > .container-narrow > * { animation: none; }
   .marquee-track { animation: none; }
   .btn:hover, .niche:hover, .zone-card:hover figure,

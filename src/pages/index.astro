@@ -28,26 +28,37 @@ const shades = [
 <Layout>
   <!-- ============ HERO ============ -->
   <section class="hero plaster">
-    <div class="container">
-      <span class="eyebrow centered">Chalakudy · Unisex Family Salon</span>
-      <h1>Brides, grooms and everyone <em>getting ready</em>.</h1>
-      <p class="lead">Bridal makeup, hair, skin, nails and grooming — for the whole family, by a team that has done this a few hundred times.</p>
-      <div class="hero-actions">
-        <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
-        <a href={withBase("/services")} class="btn btn-outline-cream">See Services</a>
-      </div>
-      {place.rating != null && place.totalRatings != null && (
-        <div class="hero-trust">
-          <span class="stars">★★★★★</span>
-          <span>{place.rating.toFixed(1)} from {place.totalRatings}+ Google reviews</span>
+    <div class="hero-inner container">
+      <div class="hero-copy">
+        <span class="eyebrow">Chalakudy · Unisex Family Salon</span>
+        <h1>Brides, grooms and everyone <em>getting ready</em>.</h1>
+        <p class="lead">Bridal makeup, hair, skin, nails and grooming — for the whole family, by a team that has done this a few hundred times.</p>
+        <div class="hero-actions">
+          <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
+          <a href={withBase("/services")} class="btn btn-outline-cream">See Services</a>
         </div>
-      )}
-    </div>
+        <ul class="hero-facts">
+          <li>Open Mon – Sat · 10am – 8pm</li>
+          <li>Bridal suite &amp; wardrobe</li>
+          <li>Walk-ins welcome</li>
+        </ul>
+      </div>
 
-    <div class="hero-portal portrait">
-      <figure class="framed">
-        <img src={withBase("/work/bridal-kanjeevaram.jpg")} alt="A D Cube bride in a cream and violet Kanjeevaram saree with gold temple jewellery" width="1080" height="1350" fetchpriority="high" />
-      </figure>
+      <div class="hero-art">
+        <figure class="hero-frame hero-frame-main">
+          <img src={withBase("/work/bridal-kanjeevaram.jpg")} alt="A D Cube bride in a cream and violet Kanjeevaram saree with gold temple jewellery" width="1080" height="1350" fetchpriority="high" />
+        </figure>
+        <figure class="hero-frame hero-frame-inset">
+          <img src={withBase("/work/groom-beard.jpg")} alt="A groom with a shaped beard and styled hair, finished at D Cube" width="1080" height="1261" />
+        </figure>
+        {place.rating != null && place.totalRatings != null && (
+          <div class="hero-badge">
+            <span class="stars" aria-hidden="true">★★★★★</span>
+            <strong>{place.rating.toFixed(1)}</strong>
+            <span>{place.totalRatings}+ Google reviews</span>
+          </div>
+        )}
+      </div>
     </div>
   </section>
 
