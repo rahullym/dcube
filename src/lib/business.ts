@@ -24,6 +24,8 @@ export const business = {
     "DCUBE Salon",
     "DCUBE Unisex Salon",
     "Dcube Family Beauty Salon",
+    /** The name on the Google Business Profile itself. */
+    "DCube Beauty Salon",
   ],
 
   legalName: "D Cube Family Salon",
@@ -37,7 +39,12 @@ export const business = {
   email: "hello@dcubesalon.com",
 
   address: {
-    streetAddress: "Athirappilly Road, opposite FAS Auditorium, Koodapuzha",
+    // Verbatim from the Google Business Profile, which formats it
+    // "Kidangan's Arcade, Near, St. James Hospital, Chalakudy, Kerala 680307".
+    // Matching it exactly is the point — this is the string Google compares the
+    // site against. The floor and room numbers live in `addressDetail` below so
+    // that visitors get them without the NAP string drifting from the listing.
+    streetAddress: "Kidangan's Arcade, near St. James Hospital",
     addressLocality: "Chalakudy",
     /** Google reads addressRegion as the state for Indian addresses. */
     addressRegion: "Kerala",
@@ -45,12 +52,22 @@ export const business = {
     addressCountry: "IN",
   },
 
-  /** Approximate — anchored on FAS Auditorium, which the salon sits opposite.
-   *  Replace with the exact pin from Google Business Profile when convenient;
-   *  five decimal places is the precision Google asks for. */
-  geo: { latitude: 10.31193, longitude: 76.34230 },
+  /** The registered LLP detail from the salon's own card — the floor and room
+   *  numbers. Shown to visitors as a wayfinding line; deliberately kept out of
+   *  `streetAddress` so the schema keeps matching Google. */
+  addressDetail: "Second Floor — Rooms 301/V, 301/T and T1–T3",
 
-  /** The canonical Google listing. Everything that links to the map uses this. */
+  /** Google plus code for the building, as an unambiguous fallback for anyone
+   *  whose maps app cannot find the arcade by name. */
+  plusCode: "887P+C3 Chalakudy",
+
+  /** The pin Google itself holds for the Kidangan's Arcade building, read off
+   *  the live Business Profile — not an approximation. */
+  geo: { latitude: 10.313526, longitude: 76.335154 },
+
+  /** The canonical Google listing. Everything that links to the map uses this.
+   *  Confirmed to still be the right listing after the move: the profile now
+   *  carries the Kidangan's Arcade address, so site and listing agree. */
   placeId: "ChIJYSspWmwCCDsR0xCaMNPVWWA",
   get mapUrl() {
     return `https://www.google.com/maps/place/?q=place_id:${this.placeId}`;
@@ -113,21 +130,4 @@ export const business = {
     "https://www.fresha.com/a/dcube-unisex-salon-india-chalakudy-koodapuzha-dacpwp5u",
     "https://davinesindia.com/pages/store-location/d-cube-unisex-salon-chalakudy",
   ],
-} as const;
-
-/** The Halifax studio. A separate place with its own address and phone, so it
- *  is marked up as its own business rather than folded into the Kerala one. */
-export const canadaStudio = {
-  name: "D Cube Studio Halifax",
-  telephone: "+1 902 412 7235",
-  telephoneE164: "+19024127235",
-  email: "dcubeca@gmail.com",
-  address: {
-    streetAddress: "3434 Dutch Village Road",
-    addressLocality: "Halifax",
-    addressRegion: "NS",
-    postalCode: "B3N 2S7",
-    addressCountry: "CA",
-  },
-  hoursNote: "By appointment only",
 } as const;

@@ -9,7 +9,7 @@
 // Everything is emitted as one `@graph` per page with stable `@id`s, so the
 // salon, the site and the page are cross-referenced rather than repeated.
 
-import { business, canadaStudio } from "./business";
+import { business } from "./business";
 
 const FALLBACK_SITE = "https://dcubesalon.com";
 
@@ -42,7 +42,6 @@ export const ids = (site: URL | undefined) => {
   return {
     salon: `${root}/#salon`,
     website: `${root}/#website`,
-    canada: `${root}/#studio-halifax`,
   };
 };
 
@@ -100,21 +99,8 @@ export const salonSchema = (site: URL | undefined) => {
     areaServed: business.areaServed.map(name => ({ "@type": "City", name })),
     sameAs: [...business.sameAs],
     knowsLanguage: ["ml", "en", "hi", "ta"],
-    subOrganization: { "@id": id.canada },
   };
 };
-
-/** The Halifax studio — a different place, so a different entity. */
-export const canadaSchema = (site: URL | undefined) => ({
-  "@type": "BeautySalon",
-  "@id": ids(site).canada,
-  name: canadaStudio.name,
-  parentOrganization: { "@id": ids(site).salon },
-  telephone: canadaStudio.telephoneE164,
-  email: canadaStudio.email,
-  address: postalAddress(canadaStudio.address),
-  url: absolute("/contact/", site),
-});
 
 export const websiteSchema = (site: URL | undefined) => ({
   "@type": "WebSite",

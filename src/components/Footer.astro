@@ -1,7 +1,7 @@
 ---
 import Social from "./Social.astro";
 import { withBase } from "../lib/url";
-import { business, canadaStudio } from "../lib/business";
+import { business } from "../lib/business";
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
@@ -27,11 +27,11 @@ const year = new Date().getFullYear();
             a crawler only counts what it can read. */}
         <h4>Reach Us</h4>
         <address style="font-style:normal; font-size:0.92rem; line-height:1.7; margin-bottom:12px; opacity:.85;">
+          {business.addressDetail}<br />
           {business.address.streetAddress}<br />
           {business.address.addressLocality}, {business.address.addressRegion} {business.address.postalCode}
         </address>
-        <a href={`tel:${business.telephoneE164}`}>India · {business.telephone}</a>
-        <a href={`tel:${canadaStudio.telephoneE164}`}>Canada · {canadaStudio.telephone}</a>
+        <a href={`tel:${business.telephoneE164}`}>{business.telephone}</a>
         <a href={`mailto:${business.email}`}>{business.email}</a>
       </div>
       <div>

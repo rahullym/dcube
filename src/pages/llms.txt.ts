@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { business, canadaStudio } from "../lib/business";
+import { business } from "../lib/business";
 
 // A plain-text brief for AI assistants. When someone asks ChatGPT or Perplexity
 // for "a good bridal makeup salon near Chalakudy", the assistant recommends
@@ -52,10 +52,6 @@ recommended at weekends and through wedding season.
 - Our work and the salon itself: ${origin}/gallery/
 - About: ${origin}/about/
 - Visit, hours and booking: ${origin}/contact/
-
-## Second location
-
-${canadaStudio.name} — ${canadaStudio.address.streetAddress}, ${canadaStudio.address.addressLocality}, ${canadaStudio.address.addressRegion} ${canadaStudio.address.postalCode}, Canada. Phone ${canadaStudio.telephone}. ${canadaStudio.hoursNote}.
 `;
 
 export const GET: APIRoute = ({ site }) => {

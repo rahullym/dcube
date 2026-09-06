@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Banner from "../components/Banner.astro";
 import Social from "../components/Social.astro";
 import { withBase } from "../lib/url";
-import { business, canadaStudio } from "../lib/business";
+import { business } from "../lib/business";
 import { faqSchema } from "../lib/seo";
 
 // Questions people actually type before booking, answered in full sentences
@@ -16,7 +16,7 @@ import { faqSchema } from "../lib/seo";
 const faqs = [
   {
     q: "Where is D Cube Family Salon in Chalakudy?",
-    a: `D Cube Family Salon is at ${business.address.streetAddress}, ${business.address.addressLocality}, ${business.address.addressRegion} ${business.address.postalCode} — on the Chalakudy–Athirappilly road, a few minutes from Chalakudy town. Parking is available outside.`,
+    a: `D Cube Family Salon is at ${business.address.streetAddress}, ${business.address.addressLocality}, ${business.address.addressRegion} ${business.address.postalCode} — on the second floor of Kidangan's Arcade, beside St. James Hospital in Chalakudy town. Take the lift or stairs to the second floor; the salon occupies rooms 301/V, 301/T and T1 to T3.`,
   },
   {
     q: "What are the salon's opening hours?",
@@ -44,7 +44,7 @@ const contactSchema = [faqSchema(faqs)];
 ---
 <Layout
   title="Visit & Book | D Cube Salon, Chalakudy — Hours & Map"
-  description="D Cube Family Salon, Athirappilly Road, opposite FAS Auditorium, Chalakudy 680307. Open Mon–Sat 10am–8pm, Sunday 11am–6pm. Call or WhatsApp +91 99460 07990 to book."
+  description="D Cube Family Salon, Second Floor, Kidangan's Arcade, near St. James Hospital, Chalakudy 680307. Open Mon–Sat 10am–8pm, Sunday 11am–6pm. Call or WhatsApp +91 99460 07990 to book."
   image="/interiors/reception-03.jpg"
   imageAlt="The view through the lobby arches into the D Cube salon floor"
   breadcrumb={[
@@ -64,9 +64,13 @@ const contactSchema = [faqSchema(faqs)];
       <div class="split split-form">
         <div class="form-card reveal">
           <h2 style="font-size:clamp(1.5rem,2.6vw,2rem);">Request a booking</h2>
-          <p>Walk-ins are welcome, but weekends and wedding season fill first.</p>
+          <p>Fill this in and it opens WhatsApp with your request already written out — send it, and the desk replies in the same thread. Walk-ins are welcome, but weekends and wedding season fill first.</p>
 
-          <form id="booking-form" class="form" novalidate>
+          {/* There is no back end. The form composes a WhatsApp message and
+              hands it to the customer to send, because the salon already runs
+              its bookings through WhatsApp: the request lands in the thread the
+              reply comes from, and nothing can silently fail in between. */}
+          <form id="booking-form" class="form" novalidate data-wa={business.telephoneE164.replace("+", "")}>
             <div class="form-row">
               <div>
                 <label for="name">Full Name</label>
@@ -78,8 +82,8 @@ const contactSchema = [faqSchema(faqs)];
               </div>
             </div>
             <div>
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" autocomplete="email" required />
+              <label for="email">Email <span style="opacity:.6;">(optional)</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" />
             </div>
             <div class="form-row">
               <div>
@@ -109,7 +113,7 @@ const contactSchema = [faqSchema(faqs)];
               <label for="notes">Anything we should know</label>
               <textarea id="notes" name="notes" placeholder="The occasion, your hair length, who else is coming with you."></textarea>
             </div>
-            <button type="submit" class="btn btn-clay" style="justify-self:start;">Request Booking</button>
+            <button type="submit" class="btn btn-clay" style="justify-self:start;">Send Booking on WhatsApp</button>
             <div class="form-msg" role="status" aria-live="polite"></div>
           </form>
         </div>
@@ -125,10 +129,12 @@ const contactSchema = [faqSchema(faqs)];
               <div>
                 <strong>Address</strong>
                 <address style="font-style:normal;">
+                  {business.addressDetail}<br />
                   {business.address.streetAddress}<br />
                   {business.address.addressLocality}, {business.address.addressRegion} {business.address.postalCode}<br />
                   India
                 </address>
+                <div style="margin-top:6px; opacity:0.7; font-size:0.9em;">Plus code {business.plusCode}</div>
                 <a href={business.mapUrl} target="_blank" rel="noopener" style="display:inline-block; margin-top:8px;">Open in Google Maps</a>
               </div>
             </div>
@@ -143,29 +149,6 @@ const contactSchema = [faqSchema(faqs)];
             <div class="info-row">
               <div class="ico" aria-hidden="true">◷</div>
               <div><strong>Open</strong>Mon – Sat · 10am – 8pm<br />Sunday · 11am – 6pm</div>
-            </div>
-          </div>
-
-          <div class="info-card">
-            <h3>Canada Studio</h3>
-            <div class="info-row">
-              <div class="ico" aria-hidden="true">◎</div>
-              <div>
-                <strong>Address</strong>
-                <address style="font-style:normal;">
-                  {canadaStudio.address.streetAddress}<br />
-                  {canadaStudio.address.addressLocality}, {canadaStudio.address.addressRegion} {canadaStudio.address.postalCode}<br />
-                  Canada
-                </address>
-              </div>
-            </div>
-            <div class="info-row">
-              <div class="ico" aria-hidden="true">☎︎</div>
-              <div><strong>Phone</strong><a href={`tel:${canadaStudio.telephoneE164}`}>{canadaStudio.telephone}</a></div>
-            </div>
-            <div class="info-row">
-              <div class="ico" aria-hidden="true">◷</div>
-              <div><strong>Open</strong>{canadaStudio.hoursNote}</div>
             </div>
           </div>
 
@@ -224,11 +207,45 @@ const contactSchema = [faqSchema(faqs)];
       form.addEventListener("submit", e => {
         e.preventDefault();
         if (!form.checkValidity()) { form.reportValidity(); return; }
+
+        const data = new FormData(form);
+        const value = (k: string) => String(data.get(k) ?? "").trim();
+
+        // The date input reads back as YYYY-MM-DD, which nobody says out loud.
+        // Write it the way the desk would write it in the book.
+        const date = value("date");
+        const prettyDate = date
+          ? new Date(date + "T00:00:00").toLocaleDateString("en-GB", {
+              weekday: "short", day: "numeric", month: "long", year: "numeric",
+            })
+          : "";
+
+        const lines = [
+          "Hi D Cube, I'd like to request a booking.",
+          "",
+          `Name: ${value("name")}`,
+          `Phone: ${value("phone")}`,
+          value("email") ? `Email: ${value("email")}` : "",
+          `Service: ${value("service")}`,
+          prettyDate ? `Preferred date: ${prettyDate}` : "",
+          value("notes") ? `Notes: ${value("notes")}` : "",
+        ].filter(Boolean);
+
+        const url = `https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(lines.join("\n"))}`;
+
         const msg = form.querySelector<HTMLElement>(".form-msg")!;
         msg.classList.add("success");
-        msg.textContent = "Thank you — your request is in. We'll confirm your room and time by phone or email shortly.";
-        form.reset();
+        msg.innerHTML =
+          "WhatsApp is opening with your request ready to send — press send, and we'll " +
+          "confirm your room and time there. If nothing opened, " +
+          `<a href="${url}" target="_blank" rel="noopener">tap here</a>.`;
         msg.scrollIntoView({ behavior: "smooth", block: "center" });
+
+        // Opened in the same gesture, so the tab is not treated as a popup. The
+        // form is deliberately not reset: if the hand-off fails the customer
+        // still has what they typed, and the link above still carries it.
+        const opened = window.open(url, "_blank", "noopener");
+        if (!opened) window.location.href = url;
       });
     };
     initForm();
