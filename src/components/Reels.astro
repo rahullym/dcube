@@ -1,0 +1,260 @@
+---
+// A rail of the salon's Instagram reels. Each card is a still we host
+// ourselves; Instagram's player is only loaded into the dialog once someone
+// actually taps a card, so the page costs no third-party request until then.
+import { reels, reelUrl, reelEmbedUrl, instagramUrl, instagramHandle } from "../lib/reels";
+import { withBase } from "../lib/url";
+
+interface Props {
+  /** Set on a dark band so the copy and controls invert. */
+  onDark?: boolean;
+}
+const { onDark = false } = Astro.props;
+---
+<div class={`reel-head reveal${onDark ? " on-dark" : ""}`}>
+  <div class="section-head" style="margin-bottom:0;">
+    <span class="eyebrow">In motion</span>
+    <h2>Watch the chair work.</h2>
+    <p>Colour, cuts and occasion makeup as they actually happen — straight from our Instagram.</p>
+  </div>
+  <div class="reel-nav">
+    <button class="rail-btn" id="reel-prev" aria-label="Previous reels">←</button>
+    <button class="rail-btn" id="reel-next" aria-label="Next reels">→</button>
+  </div>
+</div>
+
+<div class="reel-rail mt-lg" id="reel-rail">
+  {reels.map(r => (
+    <button
+      class="reel-card"
+      type="button"
+      data-embed={reelEmbedUrl(r.id)}
+      data-permalink={reelUrl(r.id)}
+      data-label={r.label}
+      aria-label={`Play reel: ${r.label}`}
+    >
+      <img src={withBase(r.poster)} alt={r.alt} loading="lazy" width="720" height="1280" />
+      <span class="reel-play" aria-hidden="true"></span>
+      <span class="reel-label">{r.label}</span>
+    </button>
+  ))}
+</div>
+
+<div class={`reel-more${onDark ? " on-dark" : ""}`}>
+  <a href={instagramUrl} target="_blank" rel="noopener" class={`btn ${onDark ? "btn-outline-cream" : "btn-outline"}`}>
+    @{instagramHandle} on Instagram
+  </a>
+</div>
+
+<div class="reel-modal" id="reel-modal" role="dialog" aria-modal="true" aria-label="Instagram reel">
+  <button class="reel-close" type="button" aria-label="Close reel">×</button>
+  <div class="reel-stage">
+    <!-- src is set on open and cleared on close, so the player stops with the dialog. -->
+    <iframe
+      id="reel-frame"
+      title="Instagram reel"
+      src="about:blank"
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+    <!-- Some browsers and blockers refuse the embed outright; this always works. -->
+    <a class="reel-fallback" id="reel-permalink" href={instagramUrl} target="_blank" rel="noopener">
+      Trouble playing? Watch it on Instagram →
+    </a>
+  </div>
+</div>
+
+<style>
+  .reel-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 28px; flex-wrap: wrap;
+  }
+  .reel-head.on-dark .section-head p { color: rgba(233, 214, 194, 0.78); }
+  /* .rail-btn is drawn in the ink of a light band; on clay it has to invert. */
+  .reel-head.on-dark .rail-btn {
+    border-color: rgba(250, 238, 220, 0.34);
+    color: var(--cream);
+  }
+  .reel-head.on-dark .rail-btn:hover {
+    background: var(--cream); color: var(--clay-800); border-color: var(--cream);
+  }
+  .reel-nav { display: flex; gap: 10px; }
+  @media (max-width: 720px) { .reel-nav { display: none; } }
+
+  /* A rail rather than a grid: reels are portrait, and five of them in a grid
+     would push everything below the fold on a phone. */
+  .reel-rail {
+    display: flex; gap: clamp(14px, 1.8vw, 22px);
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+    /* Cards bleed to the screen edge the way a feed does, so the next one
+       always peeks in and the rail reads as scrollable without a scrollbar. */
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    /* Without this the mandatory snap aligns the first card to the padding
+       edge, swallowing the gutter and leaving it flush against the screen. */
+    scroll-padding-inline: var(--gutter);
+  }
+  .reel-rail::-webkit-scrollbar { display: none; }
+
+  .reel-card {
+    position: relative; flex: 0 0 auto;
+    width: clamp(200px, 24vw, 268px);
+    aspect-ratio: 9 / 16;
+    scroll-snap-align: start;
+    border: 0; padding: 0; margin: 0;
+    border-radius: 1.25rem;
+    overflow: hidden; cursor: pointer;
+    background: var(--sand-200);
+    box-shadow: var(--lift-sm);
+    transition: box-shadow .4s ease, transform .4s ease;
+  }
+  .reel-card:hover { box-shadow: var(--lift-md); transform: translateY(-4px); }
+  .reel-card:focus-visible { outline: 2px solid var(--glow); outline-offset: 3px; }
+  .reel-card img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .reel-card:hover img { transform: scale(1.05); }
+
+  .reel-play {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 58px; height: 58px; border-radius: var(--pill);
+    background: rgba(250, 238, 220, 0.9);
+    box-shadow: var(--lift-md);
+    transition: transform .35s cubic-bezier(.2,.7,.2,1), background .35s;
+  }
+  .reel-play::after {
+    content: ""; position: absolute; top: 50%; left: 54%;
+    transform: translate(-50%, -50%);
+    border-style: solid; border-width: 9px 0 9px 15px;
+    border-color: transparent transparent transparent var(--clay-800);
+  }
+  .reel-card:hover .reel-play { transform: translate(-50%, -50%) scale(1.1); background: var(--cream-hi); }
+
+  .reel-label {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 40px 18px 16px;
+    background: linear-gradient(transparent, rgba(46, 27, 18, 0.82));
+    color: var(--cream);
+    font-family: var(--body);
+    font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase;
+    text-align: left;
+  }
+
+  .reel-more { margin-top: clamp(26px, 4vw, 40px); text-align: center; }
+
+  .reel-modal {
+    position: fixed; inset: 0; z-index: 220;
+    background: rgba(46, 27, 18, 0.94);
+    backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center;
+    padding: 5vh 5vw;
+  }
+  .reel-modal.open { display: flex; }
+  .reel-stage {
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    /* Instagram's embed lays its header and action row out around 500px and
+       clips them below that, so the stage is sized to the player, not to 9:16. */
+    width: min(500px, 94vw);
+  }
+  .reel-stage iframe {
+    width: 100%;
+    /* The player is the video plus a header strip and an action row underneath;
+       a bare 9:16 box cuts the bottom of it off. */
+    height: min(78vh, 760px);
+    border: 0; border-radius: 1rem;
+    background: var(--cream-hi);
+    box-shadow: var(--lift-lg);
+  }
+  .reel-fallback {
+    color: rgba(250, 238, 220, 0.72);
+    font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .reel-fallback:hover { color: var(--cream); }
+
+  .reel-close {
+    position: absolute; top: 22px; right: 22px;
+    width: 46px; height: 46px; border-radius: var(--pill);
+    background: rgba(250, 238, 220, 0.14); border: 0; color: var(--cream);
+    font-size: 1.4rem; cursor: pointer;
+  }
+  .reel-close:hover { background: rgba(250, 238, 220, 0.26); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reel-card, .reel-card img, .reel-play { transition: none; }
+    .reel-card:hover { transform: none; }
+    .reel-card:hover img { transform: none; }
+  }
+</style>
+
+<script>
+  // View Transitions swap the DOM without re-running module scripts, so every
+  // binding is re-applied on navigation and guarded against doubling up.
+  const initReels = () => {
+    const rail = document.getElementById("reel-rail");
+    const modal = document.getElementById("reel-modal");
+    const frame = document.getElementById("reel-frame") as HTMLIFrameElement | null;
+    const permalink = document.getElementById("reel-permalink") as HTMLAnchorElement | null;
+    if (!rail || !modal || !frame || !permalink) return;
+
+    // The band this component sits in sets `isolation: isolate`, which makes a
+    // stacking context the dialog cannot escape — it would paint under the
+    // sticky header. Hoisting it to <body> puts it back on the page's own
+    // stacking order, wherever the component is dropped in.
+    if (modal.parentElement !== document.body) document.body.appendChild(modal);
+
+    let lastFocused: HTMLElement | null = null;
+
+    const close = () => {
+      modal.classList.remove("open");
+      // Blanking the src is what actually stops playback — hiding the dialog
+      // would leave the audio running behind it.
+      frame.src = "about:blank";
+      document.body.style.overflow = "";
+      lastFocused?.focus();
+      lastFocused = null;
+    };
+
+    const open = (card: HTMLElement) => {
+      lastFocused = card;
+      frame.src = card.dataset.embed ?? "about:blank";
+      frame.title = `Instagram reel: ${card.dataset.label ?? ""}`;
+      permalink.href = card.dataset.permalink ?? permalink.href;
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      (modal.querySelector(".reel-close") as HTMLElement | null)?.focus();
+    };
+
+    if (!modal.dataset.bound) {
+      modal.dataset.bound = "1";
+      modal.addEventListener("click", e => {
+        const t = e.target as HTMLElement;
+        if (t === modal || t.classList.contains("reel-close")) close();
+      });
+      document.addEventListener("keydown", e => {
+        if (e.key === "Escape" && modal.classList.contains("open")) close();
+      });
+    }
+
+    rail.querySelectorAll<HTMLElement>(".reel-card").forEach(card => {
+      if (card.dataset.bound) return;
+      card.dataset.bound = "1";
+      card.addEventListener("click", () => open(card));
+    });
+
+    const step = () => ((rail.querySelector(".reel-card") as HTMLElement)?.offsetWidth ?? 240) + 22;
+    const bind = (id: string, dir: number) => {
+      const btn = document.getElementById(id);
+      if (!btn || btn.dataset.bound) return;
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", () => rail.scrollBy({ left: dir * step(), behavior: "smooth" }));
+    };
+    bind("reel-prev", -1);
+    bind("reel-next", 1);
+  };
+
+  initReels();
+  document.addEventListener("astro:page-load", initReels);
+</script>

@@ -1,0 +1,10 @@
+# Real 301s for hosts that support them (Netlify, Cloudflare Pages).
+# Astro's `redirects` config also emits meta-refresh stubs, which is all a
+# static host like GitHub Pages can do. Keep the two lists in step.
+#
+# These are the URLs the previous GoDaddy site is indexed under. They must keep
+# working after the cutover or the salon loses the rankings it already has.
+/about-us              /about/            301
+/contact-us            /contact/          301
+/blog                  /                  301
+/blog/f/nanoplastia    /services/         301

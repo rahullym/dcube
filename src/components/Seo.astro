@@ -1,0 +1,102 @@
+---
+// Everything that goes in <head> for search engines and link previews.
+// Kept in one component so no page can quietly ship without a canonical.
+
+import { business } from "../lib/business";
+import {
+  absolute,
+  canadaSchema,
+  salonSchema,
+  webPageSchema,
+  websiteSchema,
+} from "../lib/seo";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Site-relative path to the share image. Defaults to the lobby shot. */
+  image?: string;
+  /** Alt text for the share image, read out by screen readers on some platforms. */
+  imageAlt?: string;
+  /** Set on pages that should stay out of the index (404, thank-you pages). */
+  noindex?: boolean;
+  /** Trail for the BreadcrumbList; the last entry is the current page. */
+  breadcrumb?: { name: string; path: string }[];
+  /** Extra JSON-LD nodes merged into this page's @graph. */
+  schema?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  image = "/interiors/reception-01.jpg",
+  imageAlt = "The lobby at D Cube Family Salon, Chalakudy",
+  noindex = false,
+  breadcrumb,
+  schema = [],
+} = Astro.props;
+
+const site = Astro.site;
+
+// The GitHub Pages build is a preview of the same site at a second address.
+// Left indexable it would compete with the real domain for the salon's own
+// name — two copies of one site, neither ranking as well as one would. The
+// deploy workflow sets this; a build for the real domain does not.
+const previewBuild = import.meta.env.PUBLIC_NOINDEX === "true";
+
+// Astro builds directory-style URLs, so the canonical is the trailing-slash
+// form. Normalising here means the canonical, the sitemap entry and every
+// internal link agree on one spelling of each page.
+const path = Astro.url.pathname.endsWith("/")
+  ? Astro.url.pathname
+  : `${Astro.url.pathname}/`;
+const canonical = absolute(path, site);
+const imageUrl = absolute(image, site);
+
+const graph = [
+  salonSchema(site),
+  canadaSchema(site),
+  websiteSchema(site),
+  webPageSchema({ site, canonical, title, description, image: imageUrl, breadcrumb }),
+  ...schema,
+];
+
+const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": graph });
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+{/* max-image-preview:large is what lets a photo-led salon page show a full-width
+    thumbnail in results and in AI Overviews, rather than a postage stamp. */}
+<meta
+  name="robots"
+  content={noindex || previewBuild
+    ? "noindex, nofollow"
+    : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"}
+/>
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={business.name} />
+<meta property="og:locale" content="en_IN" />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:alt" content={imageAlt} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+{/* Legacy but still read by some local directories and map crawlers. */}
+<meta name="geo.region" content="IN-KL" />
+<meta name="geo.placename" content={business.address.addressLocality} />
+<meta
+  name="geo.position"
+  content={`${business.geo.latitude};${business.geo.longitude}`}
+/>
+<meta name="ICBM" content={`${business.geo.latitude}, ${business.geo.longitude}`} />
+
+<script type="application/ld+json" is:inline set:html={jsonLd} />

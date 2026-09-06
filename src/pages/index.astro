@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Marquee from "../components/Marquee.astro";
 import Niche from "../components/Niche.astro";
 import ZoneRail from "../components/ZoneRail.astro";
+import Reels from "../components/Reels.astro";
 import { getPlaceReviews } from "../lib/reviews";
 import { lookbook, serviceMedia } from "../lib/work";
 import { withBase } from "../lib/url";
@@ -25,14 +26,14 @@ const shades = [
   { hex: "#B8B0A6", name: "Silver" },
 ];
 ---
-<Layout>
+<Layout preloadImage="/work/bridal-kanjeevaram.jpg">
   <!-- ============ HERO ============ -->
   <section class="hero plaster">
     <div class="hero-inner container">
       <div class="hero-copy">
         <span class="eyebrow">Chalakudy · Unisex Family Salon</span>
         <h1>Brides, grooms and everyone <em>getting ready</em>.</h1>
-        <p class="lead">Bridal makeup, hair, skin, nails and grooming — for the whole family, by a team that has done this a few hundred times.</p>
+        <p class="lead">Bridal makeup, hair, skin, nails and grooming in Chalakudy — for the whole family, by a team that has done this a few hundred times.</p>
         <div class="hero-actions">
           <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
           <a href={withBase("/services")} class="btn btn-outline-cream">See Services</a>
@@ -83,6 +84,13 @@ const shades = [
       <div class="center mt-lg">
         <a href={withBase("/gallery")} class="btn btn-outline">See More of Our Work</a>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ REELS — the same work, moving ============ -->
+  <section class="section section-clay plaster">
+    <div class="container">
+      <Reels onDark={true} />
     </div>
   </section>
 

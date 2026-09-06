@@ -1,0 +1,30 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Banner from "../components/Banner.astro";
+import { withBase } from "../lib/url";
+import { business } from "../lib/business";
+---
+<Layout
+  title="Page not found — D Cube Family Salon"
+  description="That page has moved. Find the salon's services, work, hours and booking here."
+  noindex={true}
+>
+  <Banner
+    eyebrow="404"
+    title="That page has moved."
+    description="The site was rebuilt, and a few old links point at rooms that no longer exist. Here is everything that does."
+    next="cream"
+  />
+
+  <section class="section section-cream">
+    <div class="container center">
+      <div class="hero-actions" style="justify-content:center;">
+        <a href={withBase("/")} class="btn btn-clay">Home</a>
+        <a href={withBase("/services")} class="btn btn-outline">Services &amp; Menu</a>
+        <a href={withBase("/gallery")} class="btn btn-outline">Our Work</a>
+        <a href={withBase("/contact")} class="btn btn-outline">Visit &amp; Book</a>
+      </div>
+      <p class="mt-lg">Or just call the salon — <a href={`tel:${business.telephoneE164}`}>{business.telephone}</a>.</p>
+    </div>
+  </section>
+</Layout>

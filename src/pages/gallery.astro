@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Banner from "../components/Banner.astro";
+import Reels from "../components/Reels.astro";
 import { zones, shots } from "../lib/zones";
 import { lookbook } from "../lib/work";
 import { withBase } from "../lib/url";
@@ -8,8 +9,14 @@ import { withBase } from "../lib/url";
 const zoneName = Object.fromEntries(zones.map(z => [z.slug, z.name]));
 ---
 <Layout
-  title="Our Work — D Cube Family Salon"
-  description="Bridal makeup, hair, grooming and party looks from D Cube Family Salon in Chalakudy — plus a look inside the salon itself."
+  title="Bridal Makeup & Hair Gallery, Chalakudy | D Cube"
+  description="Real bridal, groom, reception and party looks done at D Cube Family Salon in Chalakudy, plus a room-by-room look inside the salon. Book a bridal trial on +91 99460 07990."
+  image="/work/bridal-kanjeevaram.jpg"
+  imageAlt="A D Cube bride in a cream and violet Kanjeevaram saree with gold temple jewellery"
+  breadcrumb={[
+    { name: "Home", path: "/" },
+    { name: "Our Work", path: "/gallery/" },
+  ]}
 >
   <Banner
     eyebrow="Our work"
@@ -28,6 +35,13 @@ const zoneName = Object.fromEntries(zones.map(z => [z.slug, z.name]));
           </figure>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- ============ REELS ============ -->
+  <section class="section section-clay plaster">
+    <div class="container">
+      <Reels onDark={true} />
     </div>
   </section>
 

@@ -205,10 +205,23 @@ const menu = [
   },
 ];
 import { withBase } from "../lib/url";
+import { offerCatalogSchema } from "../lib/seo";
+
+// The menu doubles as structured data: every line here becomes a Service the
+// salon offers, so a search for "nanoplastia Chalakudy" can resolve to this
+// business rather than to a definition of the treatment.
+const serviceSchema = [offerCatalogSchema(Astro.site, menu)];
 ---
 <Layout
-  title="Services — D Cube Family Salon"
-  description="The full D Cube menu: facials, hair cut and colour, spa and treatment, makeup, threading, waxing, pedicure and manicure."
+  title="Salon Services & Full Menu in Chalakudy | D Cube"
+  description="The full menu at D Cube Family Salon, Chalakudy: haircuts, hair colour and balayage, keratin and nanoplastia, hydra facials, bridal and HD makeup, waxing, threading, manicure and pedicure."
+  image="/interiors/treatment-02.jpg"
+  imageAlt="The treatment room at D Cube Family Salon, Chalakudy"
+  breadcrumb={[
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services/" },
+  ]}
+  schema={serviceSchema}
 >
   <Banner
     eyebrow="The menu"

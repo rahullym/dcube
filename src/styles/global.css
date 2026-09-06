@@ -241,6 +241,8 @@ img { max-width: 100%; height: auto; display: block; }
   .nav-shell > .btn { display: none; }
   .menu-toggle { display: flex; }
   .brand img { height: 36px; }
+  /* The logo is the link home; the mark shrinks but the hit area should not. */
+  .brand { min-height: 44px; }
 }
 
 /* ============================================================
@@ -795,6 +797,13 @@ img { max-width: 100%; height: auto; display: block; }
   box-shadow: 0 0 0 3px rgba(190,114,80,0.14);
 }
 .form textarea { resize: vertical; min-height: 110px; }
+
+/* iOS Safari zooms the viewport whenever a focused field renders below 16px,
+   which jerks the layout mid-typing. The viewport stays user-scalable; the
+   text just meets the threshold that stops the automatic zoom. */
+@media (max-width: 768px) {
+  .form input, .form select, .form textarea { font-size: 16px; }
+}
 .form-msg {
   display: none; padding: 15px 18px; border-radius: 12px;
   background: rgba(154,81,51,0.08); border-left: 3px solid var(--terracotta-500);
@@ -822,6 +831,10 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--ink-mute); margin-bottom: 3px;
 }
 .info-row a:hover { color: var(--terracotta-600); }
+@media (max-width: 860px) {
+  /* Same 44px floor for the tap targets on the Visit page. */
+  .info-row a { display: inline-flex; align-items: center; min-height: 44px; }
+}
 
 /* ============================================================
    CTA — an arched doorway
@@ -858,6 +871,17 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .site-footer a { display: block; margin-bottom: 9px; font-size: 0.92rem; color: rgba(233,214,194,0.62); }
 .site-footer a:hover { color: var(--cream); }
+
+/* On touch these column links were 24px tall and 33px apart — under the 44px
+   minimum, and this is where both phone numbers live. Padding grows the hit
+   area without moving the text off its baseline rhythm. Buttons, the brand
+   lockup and the social row size themselves and are left alone. */
+@media (max-width: 860px) {
+  .site-footer a:not(.btn):not(.footer-brand):not(.social-btn) {
+    display: flex; align-items: center;
+    min-height: 44px; margin-bottom: 0;
+  }
+}
 .site-footer p { color: rgba(233,214,194,0.5); font-size: 0.92rem; max-width: 300px; }
 .footer-brand img { height: 62px; margin-bottom: 22px; filter: brightness(0) invert(1); opacity: .88; }
 .footer-mark {
@@ -1098,7 +1122,10 @@ img { max-width: 100%; height: auto; display: block; }
   .chip {
     flex: 0 0 auto;
     scroll-snap-align: start;
-    padding: 12px 20px;   /* ~44px tall, a comfortable touch target */
+    /* Padding alone landed at 36px once the 10.9px text and border were
+       counted, so the floor is stated outright. */
+    padding: 12px 20px;
+    min-height: 44px;
   }
 }
 
@@ -1174,4 +1201,48 @@ img { max-width: 100%; height: auto; display: block; }
 @media (prefers-reduced-motion: reduce) {
   .wa-ring { animation: none; }
   .wa-float:hover { transform: none; }
+}
+
+/* ============ FAQ ============
+   Answers are open to crawlers whether or not the reader expands them —
+   <details> keeps its content in the DOM, so nothing here is hidden text. */
+.faq { display: grid; gap: 10px; }
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  /* A hint of the arch the rest of the site is built on, scaled down — the full
+     --arch-soft radius is drawn for tall cards and overwhelms a single row. */
+  border-radius: 1.4rem 1.4rem 0.5rem 0.5rem;
+  padding: clamp(18px, 2.2vw, 24px) clamp(20px, 2.6vw, 30px);
+  transition: box-shadow .25s var(--ease), border-color .25s var(--ease);
+}
+.faq-item:hover { border-color: var(--line); box-shadow: var(--lift-sm); }
+.faq-item[open] { box-shadow: var(--lift-sm); }
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  font-family: var(--display);
+  font-size: clamp(1.02rem, 1.5vw, 1.14rem);
+  line-height: 1.5;
+  color: var(--ink);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+";
+  margin-left: auto;
+  flex: none;
+  color: var(--terracotta-600);
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: transform .25s var(--ease);
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item p {
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 0.97rem;
 }

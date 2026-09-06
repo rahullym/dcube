@@ -1,7 +1,8 @@
 ---
 import Social from "./Social.astro";
-const year = new Date().getFullYear();
 import { withBase } from "../lib/url";
+import { business, canadaStudio } from "../lib/business";
+const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
   <div class="container">
@@ -21,10 +22,17 @@ import { withBase } from "../lib/url";
         <a href={withBase("/contact")}>Visit & Book</a>
       </div>
       <div>
+        {/* The address sits in the footer of every page, in text. It is the
+            detail local search cross-checks against the Google listing, and
+            a crawler only counts what it can read. */}
         <h4>Reach Us</h4>
-        <a href="tel:+919946007990">India · +91 99460 07990</a>
-        <a href="tel:+19024127235">Canada · +1 902 412 7235</a>
-        <a href="mailto:hello@dcubesalon.com">hello@dcubesalon.com</a>
+        <address style="font-style:normal; font-size:0.92rem; line-height:1.7; margin-bottom:12px; opacity:.85;">
+          {business.address.streetAddress}<br />
+          {business.address.addressLocality}, {business.address.addressRegion} {business.address.postalCode}
+        </address>
+        <a href={`tel:${business.telephoneE164}`}>India · {business.telephone}</a>
+        <a href={`tel:${canadaStudio.telephoneE164}`}>Canada · {canadaStudio.telephone}</a>
+        <a href={`mailto:${business.email}`}>{business.email}</a>
       </div>
       <div>
         <h4>Open</h4>

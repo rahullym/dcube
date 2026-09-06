@@ -31,6 +31,10 @@ jobs:
           # site moves to dcubesalon.com and it builds for the root instead.
           SITE_URL: https://rahullym.github.io
           BASE_PATH: /dcube
+          # This deploy is a preview of the site that will live on
+          # dcubesalon.com. Indexing it would put two copies of the same salon
+          # in front of Google. Drop this line at the same time as the two above.
+          PUBLIC_NOINDEX: "true"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

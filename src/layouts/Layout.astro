@@ -4,39 +4,63 @@ import { ViewTransitions } from "astro:transitions";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
+import Seo from "../components/Seo.astro";
+import { withBase } from "../lib/url";
 
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  imageAlt?: string;
+  noindex?: boolean;
+  breadcrumb?: { name: string; path: string }[];
+  schema?: Record<string, unknown>[];
+  /** Site-relative image to preload — the one the visitor sees before scrolling. */
+  preloadImage?: string;
 }
 
 const {
-  title = "D Cube Family Salon — Hair, Skin, Bridal & Makeup in Chalakudy",
+  // Titles lead with what the page is and end with where the salon is, because
+  // "in Chalakudy" is the half of the query that decides whether we are the
+  // right result at all. Kept near 60 characters so nothing is cut in results.
+  title = "Bridal Makeup & Unisex Family Salon in Chalakudy | D Cube",
   description =
-    "A terracotta-and-cream family salon in Chalakudy. Hair studio, wash lounge, spa and treatment rooms, VIP suites, facial rooms, makeup studio and a bridal wardrobe — under one roof.",
+    "D Cube Family Salon, Chalakudy — bridal and party makeup, hair cutting and colour, facials, spa, waxing and nails for women, men and kids. Call +91 99460 07990.",
+  image,
+  imageAlt,
+  noindex,
+  breadcrumb,
+  schema,
+  preloadImage,
 } = Astro.props;
-import { withBase } from "../lib/url";
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <Seo
+      title={title}
+      description={description}
+      image={image}
+      imageAlt={imageAlt}
+      noindex={noindex}
+      breadcrumb={breadcrumb}
+      schema={schema}
+    />
     <meta name="theme-color" content="#9A5133" />
     <link rel="icon" type="image/png" href={withBase("/logo.png")} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content={new URL(withBase("/interiors/reception-01.jpg"), Astro.site).href} />
+    <link rel="apple-touch-icon" href={withBase("/logo.png")} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Prata&family=Jost:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
+    {preloadImage && (
+      <link rel="preload" as="image" href={withBase(preloadImage)} fetchpriority="high" />
+    )}
     <ViewTransitions />
     <script is:inline>
       // Scroll-reveal starts elements hidden. That only happens once this class

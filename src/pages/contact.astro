@@ -3,10 +3,55 @@ import Layout from "../layouts/Layout.astro";
 import Banner from "../components/Banner.astro";
 import Social from "../components/Social.astro";
 import { withBase } from "../lib/url";
+import { business, canadaStudio } from "../lib/business";
+import { faqSchema } from "../lib/seo";
+
+// Questions people actually type before booking, answered in full sentences
+// that stand on their own. Written this way on purpose: an answer that needs
+// no surrounding context is the kind a search result or an AI assistant can
+// lift verbatim, and each one names the town so it matches a local search.
+//
+// Every question below is also rendered on the page. Marking up an answer the
+// reader cannot see is against Google's guidelines, not a shortcut.
+const faqs = [
+  {
+    q: "Where is D Cube Family Salon in Chalakudy?",
+    a: `D Cube Family Salon is at ${business.address.streetAddress}, ${business.address.addressLocality}, ${business.address.addressRegion} ${business.address.postalCode} — on the Chalakudy–Athirappilly road, a few minutes from Chalakudy town. Parking is available outside.`,
+  },
+  {
+    q: "What are the salon's opening hours?",
+    a: "The salon is open Monday to Saturday from 10am to 8pm, and on Sunday from 11am to 6pm. Walk-ins are welcome during these hours, though weekends and wedding season fill first.",
+  },
+  {
+    q: "Is D Cube a unisex salon?",
+    a: "Yes. D Cube is a unisex family salon — women, men and children are all served, in ten separate rooms so that a bridal morning, a first haircut and a quiet facial never share the same space.",
+  },
+  {
+    q: "Do I need to book a bridal makeup trial in advance?",
+    a: "Yes, we strongly recommend it. Wedding-season Saturdays in Chalakudy book out weeks ahead, and a trial is the fastest way to hold your date. Call or WhatsApp " + business.telephone + " to arrange one.",
+  },
+  {
+    q: "Which areas does the salon serve?",
+    a: `Guests travel to D Cube from ${business.areaServed.slice(0, -1).join(", ")} and across the wider Thrissur district.`,
+  },
+  {
+    q: "Do you take walk-ins, or is booking required?",
+    a: "Walk-ins are welcome. Booking is not required, but a booking guarantees the stylist, the hour and the room you wanted — which matters most at weekends and through wedding season.",
+  },
+];
+
+const contactSchema = [faqSchema(faqs)];
 ---
 <Layout
-  title="Visit & Book — D Cube Family Salon"
-  description="Book a chair at D Cube Family Salon, Chalakudy. Open Mon–Sat 10am–8pm, Sunday 11am–6pm. Call +91 99460 07990."
+  title="Visit & Book | D Cube Salon, Chalakudy — Hours & Map"
+  description="D Cube Family Salon, Athirappilly Road, opposite FAS Auditorium, Chalakudy 680307. Open Mon–Sat 10am–8pm, Sunday 11am–6pm. Call or WhatsApp +91 99460 07990 to book."
+  image="/interiors/reception-03.jpg"
+  imageAlt="The view through the lobby arches into the D Cube salon floor"
+  breadcrumb={[
+    { name: "Home", path: "/" },
+    { name: "Visit & Book", path: "/contact/" },
+  ]}
+  schema={contactSchema}
 >
   <Banner
     eyebrow="Visit us"
@@ -72,36 +117,55 @@ import { withBase } from "../lib/url";
         <div class="stack-gap reveal d1">
           <div class="info-card">
             <h3>Chalakudy Salon</h3>
+            {/* The street address is written out, not just linked to a map pin.
+                A crawler cannot read what is behind a Maps link, and the
+                address is the single strongest local-search signal a page has. */}
+            <div class="info-row">
+              <div class="ico" aria-hidden="true">◎</div>
+              <div>
+                <strong>Address</strong>
+                <address style="font-style:normal;">
+                  {business.address.streetAddress}<br />
+                  {business.address.addressLocality}, {business.address.addressRegion} {business.address.postalCode}<br />
+                  India
+                </address>
+                <a href={business.mapUrl} target="_blank" rel="noopener" style="display:inline-block; margin-top:8px;">Open in Google Maps</a>
+              </div>
+            </div>
             <div class="info-row">
               <div class="ico" aria-hidden="true">☎︎</div>
-              <div><strong>Phone</strong><a href="tel:+919946007990">+91 99460 07990</a></div>
+              <div><strong>Phone</strong><a href={`tel:${business.telephoneE164}`}>{business.telephone}</a></div>
             </div>
             <div class="info-row">
               <div class="ico" aria-hidden="true">✉︎</div>
-              <div><strong>Email</strong><a href="mailto:hello@dcubesalon.com">hello@dcubesalon.com</a></div>
+              <div><strong>Email</strong><a href={`mailto:${business.email}`}>{business.email}</a></div>
             </div>
             <div class="info-row">
               <div class="ico" aria-hidden="true">◷</div>
               <div><strong>Open</strong>Mon – Sat · 10am – 8pm<br />Sunday · 11am – 6pm</div>
-            </div>
-            <div class="info-row">
-              <div class="ico" aria-hidden="true">◎</div>
-              <div>
-                <strong>Find us</strong>
-                <a href="https://www.google.com/maps/place/?q=place_id:ChIJYSspWmwCCDsR0xCaMNPVWWA" target="_blank" rel="noopener">Open in Google Maps</a>
-              </div>
             </div>
           </div>
 
           <div class="info-card">
             <h3>Canada Studio</h3>
             <div class="info-row">
+              <div class="ico" aria-hidden="true">◎</div>
+              <div>
+                <strong>Address</strong>
+                <address style="font-style:normal;">
+                  {canadaStudio.address.streetAddress}<br />
+                  {canadaStudio.address.addressLocality}, {canadaStudio.address.addressRegion} {canadaStudio.address.postalCode}<br />
+                  Canada
+                </address>
+              </div>
+            </div>
+            <div class="info-row">
               <div class="ico" aria-hidden="true">☎︎</div>
-              <div><strong>Phone</strong><a href="tel:+19024127235">+1 902 412 7235</a></div>
+              <div><strong>Phone</strong><a href={`tel:${canadaStudio.telephoneE164}`}>{canadaStudio.telephone}</a></div>
             </div>
             <div class="info-row">
               <div class="ico" aria-hidden="true">◷</div>
-              <div><strong>Open</strong>By appointment only</div>
+              <div><strong>Open</strong>{canadaStudio.hoursNote}</div>
             </div>
           </div>
 
@@ -119,13 +183,31 @@ import { withBase } from "../lib/url";
     </div>
   </section>
 
+  <!-- ============ FAQ ============ -->
+  <section class="section section-sand">
+    <div class="container-narrow">
+      <div class="section-head centered reveal">
+        <span class="eyebrow centered">Before you come</span>
+        <h2>Questions we get asked.</h2>
+      </div>
+      <div class="faq reveal">
+        {faqs.map(f => (
+          <details class="faq-item">
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="cta plaster">
     <div class="container reveal">
       <h2>Prefer to just call?</h2>
       <p>The desk picks up during opening hours, every day but Monday morning.</p>
       <div class="cta-actions">
-        <a href="tel:+919946007990" class="btn btn-cream">+91 99460 07990</a>
-        <a href="https://wa.me/919946007990" target="_blank" rel="noopener" class="btn btn-outline-cream">WhatsApp Us</a>
+        <a href={`tel:${business.telephoneE164}`} class="btn btn-cream">{business.telephone}</a>
+        <a href={business.whatsapp} target="_blank" rel="noopener" class="btn btn-outline-cream">WhatsApp Us</a>
       </div>
     </div>
   </section>
