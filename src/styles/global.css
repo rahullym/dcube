@@ -810,6 +810,9 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--clay-800); font-size: 0.92rem;
 }
 .form-msg.success { display: block; }
+/* The fallback WhatsApp link inside the message is the whole recovery path
+   when a browser blocks the hand-off, so it has to read as a link. */
+.form-msg a { color: var(--terracotta-500); font-weight: 600; text-decoration: underline; }
 
 .info-card {
   background: var(--surface);
@@ -1105,7 +1108,10 @@ img { max-width: 100%; height: auto; display: block; }
     flex: 0 0 auto;
     scroll-snap-align: start;
     border-color: var(--line);
+    /* 11px padding landed these at 43px — a pixel under the touch minimum. */
     padding: 11px 18px;
+    min-height: 44px;
+    display: inline-flex; align-items: center;
   }
 }
 
