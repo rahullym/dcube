@@ -266,8 +266,12 @@ img { max-width: 100%; height: auto; display: block; }
   left: 50%; top: 9%;
   width: min(1080px, 92vw); aspect-ratio: 1 / 1.2;
   transform: translateX(-50%);
-  border: 1px solid rgba(250, 238, 220, 0.11);
+  border: 1px solid rgba(250, 238, 220, 0.13);
   border-radius: var(--arch);
+  /* only the crown of the arch survives — the straight jambs would
+     otherwise draw a stray line down through the headline */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 34%);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 34%);
   pointer-events: none;
 }
 
@@ -294,11 +298,11 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* The three things a walk-in wants to know, set as a hairline ledger */
 .hero-facts {
-  display: flex; flex-wrap: wrap; gap: 10px 28px;
+  display: flex; flex-wrap: wrap; gap: 10px 18px;
   list-style: none;
   margin: clamp(30px, 4vw, 42px) 0 0; padding-top: clamp(22px, 3vw, 28px);
   border-top: 1px solid rgba(250, 238, 220, 0.18);
-  font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+  font-size: 0.62rem; letter-spacing: 0.13em; text-transform: uppercase;
   color: rgba(250, 238, 220, 0.72);
 }
 .hero-facts li { display: inline-flex; align-items: center; gap: 9px; }
@@ -317,9 +321,9 @@ img { max-width: 100%; height: auto; display: block; }
 .hero-art::before {
   content: "";
   position: absolute; z-index: -1;
-  inset: -14% -10% 2% 0;
-  background: radial-gradient(closest-side, rgba(255, 201, 143, 0.45), transparent 74%);
-  filter: blur(34px);
+  inset: -16% -14% -4% -6%;
+  background: radial-gradient(ellipse 62% 54% at 52% 46%, rgba(255, 201, 143, 0.5), transparent 70%);
+  filter: blur(40px);
   pointer-events: none;
 }
 .hero-frame { margin: 0; overflow: hidden; background: var(--clay-800); }
@@ -337,7 +341,7 @@ img { max-width: 100%; height: auto; display: block; }
   border-radius: var(--arch-niche);
   box-shadow: var(--lift-md);
 }
-.hero-frame-inset img { aspect-ratio: 3 / 4; object-position: 50% 20%; }
+.hero-frame-inset img { aspect-ratio: 3 / 4; object-position: 50% 14%; }
 
 .hero-badge {
   position: absolute; z-index: 2;
@@ -1096,4 +1100,78 @@ img { max-width: 100%; height: auto; display: block; }
     scroll-snap-align: start;
     padding: 12px 20px;   /* ~44px tall, a comfortable touch target */
   }
+}
+
+/* ============================================================
+   FLOATING WHATSAPP
+   Sits below the mobile menu (z-index 70) so the overlay covers
+   it, and below the lightbox (200). Honours iOS safe areas.
+   ============================================================ */
+.wa-float {
+  position: fixed;
+  z-index: 60;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  height: 56px;
+  padding: 0 16px;
+  border-radius: var(--pill);
+  background: #25D366;
+  color: #fff;
+  box-shadow: 0 10px 30px -8px rgba(37, 211, 102, 0.55), var(--lift-sm);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease), gap .3s var(--ease);
+}
+.wa-float svg { width: 26px; height: 26px; flex: none; display: block; }
+.wa-float:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px -10px rgba(37, 211, 102, 0.65), var(--lift-md);
+}
+.wa-float:focus-visible { outline: 3px solid var(--terracotta-600); outline-offset: 3px; }
+
+/* The label stays collapsed until hover, so the button reads as an icon */
+.wa-label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: max-width .35s var(--ease), opacity .25s var(--ease), margin-left .35s var(--ease);
+}
+.wa-float:hover .wa-label,
+.wa-float:focus-visible .wa-label {
+  max-width: 160px;
+  margin-left: 10px;
+  opacity: 1;
+}
+
+/* A single soft pulse so the button is noticed without nagging */
+.wa-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid #25D366;
+  animation: wa-pulse 2.8s var(--ease) infinite;
+  pointer-events: none;
+}
+@keyframes wa-pulse {
+  0%   { opacity: .6; transform: scale(1); }
+  70%  { opacity: 0;  transform: scale(1.35); }
+  100% { opacity: 0;  transform: scale(1.35); }
+}
+
+@media (max-width: 600px) {
+  .wa-float { height: 52px; padding: 0 13px; }
+  .wa-float svg { width: 24px; height: 24px; }
+  /* No hover on touch, so never reserve room for the label */
+  .wa-float:hover .wa-label { max-width: 0; margin-left: 0; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-ring { animation: none; }
+  .wa-float:hover { transform: none; }
 }

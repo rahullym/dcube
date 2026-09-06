@@ -20,26 +20,88 @@ const PLACE_ID = "ChIJYSspWmwCCDsR0xCaMNPVWWA"; // DCUBE Beauty Salon, Chalakudy
 
 // Reviews shown when no API key is set.
 //
-// TODO: replace these with real reviews copied from the Google listing.
-// Paste the reviewer's name and their own words — do not paraphrase. Set
-// `rating` and `totalRatings` below only once the real figures are confirmed;
-// while they are null the site simply omits the star line instead of
-// publishing a number nobody has verified.
+// Copied verbatim from the salon's Google Business listing (Most relevant tab,
+// read 6 Sep 2026): https://maps.app.goo.gl/VYELb44NDVMJ7F8a9
+// Rating and count are the figures Google showed on that visit. Only the first
+// three are rendered on the home page; keep the strongest three at the top and
+// leave the rest as spares.
 const CURATED: PlaceData = {
-  // Fill these in from the Google listing header, e.g. rating: 4.8, totalRatings: 127.
-  // Left null, the site omits the star line rather than showing an unverified figure.
-  rating: null,
-  totalRatings: null,
+  rating: 4.4,
+  totalRatings: 420,
 
-  // Paste real reviews here — the reviewer's name and their own wording.
-  // Three is the number the home page grid is built for.
   reviews: [
-    // {
-    //   author: "Name as shown on Google",
-    //   rating: 5,
-    //   text: "Their review, copied exactly.",
-    //   relativeTime: "2 months ago",   // optional
-    // },
+    {
+      author: "Anand ms Ramu",
+      rating: 5,
+      text:
+        "I always get my haircut from Ullash ettan at D Cube Salon, and he does an incredible job every single time. " +
+        "What makes him special is how he cuts hair according to your face structure\u2014it just suits you perfectly! " +
+        "Even as your hair grows out over time, it remains super easy to style and manage. Highly recommended if you want a perfect, haircut!",
+      relativeTime: "a month ago",
+    },
+    {
+      author: "Therase Joshy",
+      rating: 5,
+      text:
+        "I had a wonderful experience for my saree draping and makeup. Everything was done beautifully. " +
+        "The look was elegant, and I felt confident and comfortable throughout.",
+      relativeTime: "a month ago",
+    },
+    {
+      author: "Prince Francis Thottathil",
+      rating: 5,
+      text:
+        "Highly recommend Nayana! She was friendly, professional, and paid great attention to detail. " +
+        "She made me feel comfortable throughout the facial, and my skin has never looked better. Thank you for the wonderful experience!",
+      relativeTime: "a month ago",
+    },
+    {
+      author: "Bijoy Thomas",
+      rating: 5,
+      text:
+        "Dcube Family Beauty Salon in Chalakudy has been a trusted place for me for years. Recently, my two daughters received " +
+        "beautifully done, professional haircuts, and we were very happy with the results. I regularly visit for both hair and " +
+        "skincare services, and they consistently deliver exactly what I expect. Their team listens carefully to customer " +
+        "preferences, maintains a high level of professionalism, and provides excellent service every time. In my experience, " +
+        "there is no other establishment in Chalakudy that matches their quality and customer care. Highly recommended.",
+      relativeTime: "4 months ago",
+    },
+    {
+      author: "Jenson M.G",
+      rating: 5,
+      text:
+        "If you are looking for the best grooming experience in Chalakudy, DCUBE Salon is the perfect choice. The salon offers " +
+        "exceptional services for both bride and groom, making every special occasion truly memorable. Their bridal and groom " +
+        "packages are handled with great professionalism, ensuring a flawless and elegant look. What I really loved is their " +
+        "guest makeover services, which are done beautifully at very reasonable prices without compromising quality.",
+      relativeTime: "4 months ago",
+    },
+    {
+      author: "Gokul Prasad",
+      rating: 5,
+      text:
+        "Had a really good experience here for my groom makeup and hairstyling. The stylist was friendly, easy to talk to, and " +
+        "gave helpful suggestions that suited me well. Everything was done neatly and on time, and I was happy with how it " +
+        "turned out. Would recommend for anyone looking for a simple and reliable service.",
+      relativeTime: "5 months ago",
+    },
+    {
+      author: "Sujitha Smijay",
+      rating: 4,
+      text:
+        "I had a wonderful experience with the nanoplastia hair treatment at this salon. My hair feels smooth, shiny, and healthy. " +
+        "The staff are extremely friendly and welcoming, and the salon maintains great hygiene. I\u2019m truly impressed with the " +
+        "results. I visited with my two kids, and they were well taken care of and comfortable during the entire treatment. Highly recommended!",
+      relativeTime: "5 months ago",
+    },
+    {
+      author: "Aleena Chirayath",
+      rating: 5,
+      text:
+        "Loved the threading and facial! The staff was friendly, the service was great, and my skin felt fresh and glowing. " +
+        "Definitely coming back!",
+      relativeTime: "a month ago",
+    },
   ],
 };
 

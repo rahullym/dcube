@@ -38,7 +38,7 @@ const shades = [
           <a href={withBase("/services")} class="btn btn-outline-cream">See Services</a>
         </div>
         <ul class="hero-facts">
-          <li>Open Mon – Sat · 10am – 8pm</li>
+          <li>Mon – Sat · 10am – 8pm</li>
           <li>Bridal suite &amp; wardrobe</li>
           <li>Walk-ins welcome</li>
         </ul>
@@ -55,7 +55,7 @@ const shades = [
           <div class="hero-badge">
             <span class="stars" aria-hidden="true">★★★★★</span>
             <strong>{place.rating.toFixed(1)}</strong>
-            <span>{place.totalRatings}+ Google reviews</span>
+            <span>{place.totalRatings} Google reviews</span>
           </div>
         )}
       </div>
@@ -167,7 +167,7 @@ const shades = [
       <div class="section-head centered reveal">
         <span class="eyebrow centered">
           {place.rating != null && place.totalRatings != null
-            ? `${place.rating.toFixed(1)} ★ · ${place.totalRatings}+ Google reviews`
+            ? `${place.rating.toFixed(1)} ★ · ${place.totalRatings} Google reviews`
             : "In our guests' words"}
         </span>
         <h2>What Chalakudy says.</h2>
