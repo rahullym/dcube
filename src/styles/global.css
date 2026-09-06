@@ -283,6 +283,9 @@ img { max-width: 100%; height: auto; display: block; }
   border: 1px solid rgba(250,238,220,0.2);
 }
 .hero-portal img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+/* A portrait of the work reads as a salon; a wide empty room reads as a brochure */
+.hero-portal.portrait { max-width: 480px; }
+.hero-portal.portrait img { aspect-ratio: 4 / 5; }
 .hero-portal::before {
   content: ""; position: absolute;
   left: 50%; top: -6%; transform: translateX(-50%);
@@ -447,9 +450,6 @@ img { max-width: 100%; height: auto; display: block; }
 .niche.has-media .ico { margin-top: -46px; background: var(--surface); position: relative; }
 .niche.has-media.filled .ico { background: var(--terracotta-600); }
 
-/* Stock photography runs cool against the terracotta; a light warm cast
-   pulls it into the same palette as the rooms. */
-img.warm { filter: sepia(0.16) saturate(1.1) hue-rotate(-6deg) contrast(1.02); }
 
 /* One column on phones makes six image-led cards a very long scroll, so the
    media shortens and the body tightens rather than each card running ~500px. */
@@ -953,7 +953,7 @@ img.warm { filter: sepia(0.16) saturate(1.1) hue-rotate(-6deg) contrast(1.02); }
   transition: box-shadow .4s var(--ease), transform .4s var(--ease);
 }
 .look img {
-  width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block;
+  width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 22%; display: block;
   transition: transform 1s var(--ease);
 }
 .look:hover { transform: translateY(-6px); box-shadow: var(--lift-md); }

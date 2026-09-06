@@ -2,29 +2,50 @@
 import Layout from "../layouts/Layout.astro";
 import Banner from "../components/Banner.astro";
 import { zones, shots } from "../lib/zones";
+import { lookbook } from "../lib/work";
+import { withBase } from "../lib/url";
 
 const zoneName = Object.fromEntries(zones.map(z => [z.slug, z.name]));
-import { withBase } from "../lib/url";
 ---
 <Layout
-  title="The Space — D Cube Family Salon"
-  description="Walk the D Cube floor: reception and lobby, hair studio, wash lounge, hair spa, treatment room, VIP suites, facial rooms, makeup studio, nail bar and the bridal wardrobe."
+  title="Our Work — D Cube Family Salon"
+  description="Bridal makeup, hair, grooming and party looks from D Cube Family Salon in Chalakudy — plus a look inside the salon itself."
 >
   <Banner
-    eyebrow="Interior views"
-    title="The space, room by room."
-    description="Terracotta plaster, lime-washed arches and backlit mirrors, drawn for us by Ar. Sneha Raju. Tap any view to enlarge."
-    next="sand"
+    eyebrow="Our work"
+    title="Looks we've sent out the door."
+    description="Brides, grooms, receptions and everyday styling — all done in our chairs. Tap any photograph to enlarge."
   />
 
+  <!-- ============ THE WORK ============ -->
+  <section class="section section-cream">
+    <div class="container-wide">
+      <div class="masonry" data-stagger>
+        {lookbook.map(l => (
+          <figure class="shot" tabindex="0" role="button" aria-label={`Enlarge: ${l.alt}`}>
+            <img src={withBase(l.src)} alt={l.alt} loading="lazy" width="1080" height="1350" />
+            <figcaption>{l.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE SALON ITSELF ============ -->
   <section class="section section-sand">
     <div class="container-wide">
+      <div class="section-head centered reveal">
+        <span class="eyebrow centered">The salon</span>
+        <h2>And the rooms it happens in.</h2>
+        <p>Ten rooms, so a bride, a first haircut and a quiet facial never share the same air.</p>
+      </div>
+
       <div class="filter-bar reveal" role="group" aria-label="Filter by room">
         <button class="chip active" data-filter="all">All Rooms</button>
         {zones.map(z => <button class="chip" data-filter={z.slug}>{z.name}</button>)}
       </div>
 
-      <div class="masonry" id="masonry" data-stagger>
+      <div class="masonry" id="space-grid" data-stagger>
         {shots.map(s => (
           <figure class="shot" data-zone={s.zone} tabindex="0" role="button" aria-label={`Enlarge: ${s.alt}`}>
             <img src={withBase(s.src)} alt={s.alt} loading="lazy" width="1536" height="1024" />
@@ -35,28 +56,10 @@ import { withBase } from "../lib/url";
     </div>
   </section>
 
-  <section class="section section-cream">
-    <div class="container">
-      <div class="section-head centered reveal">
-        <span class="eyebrow centered">The floor plan</span>
-        <h2>What happens where.</h2>
-      </div>
-      <div class="niche-grid" data-stagger>
-        {zones.map((z, i) => (
-          <article class={`niche reveal ${i % 3 === 1 ? "d1" : i % 3 === 2 ? "d2" : ""}${i % 4 === 1 ? " filled" : ""}`}>
-            <div class="ico" aria-hidden="true">{String(i + 1).padStart(2, "0")}</div>
-            <h3>{z.name}</h3>
-            <p>{z.blurb}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <section class="cta plaster">
     <div class="container reveal">
-      <h2>Pictures are one thing.</h2>
-      <p>The plaster, the light and the quiet are another. Come and stand in it.</p>
+      <h2>Want a look like these?</h2>
+      <p>Tell us the date and the occasion, and we'll build the package around it.</p>
       <div class="cta-actions">
         <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
         <a href={withBase("/services")} class="btn btn-outline-cream">See the Menu</a>
@@ -65,13 +68,14 @@ import { withBase } from "../lib/url";
   </section>
 
   <script>
+    // Scoped to the room grid so the work photographs above are never filtered out.
     const initFilters = () => {
       const chips = document.querySelectorAll<HTMLButtonElement>(".chip");
-      const shots = document.querySelectorAll<HTMLElement>(".shot");
+      const roomShots = document.querySelectorAll<HTMLElement>("#space-grid .shot");
       if (!chips.length) return;
 
       const apply = (filter: string) => {
-        shots.forEach(s => s.classList.toggle("hidden", filter !== "all" && s.dataset.zone !== filter));
+        roomShots.forEach(s => s.classList.toggle("hidden", filter !== "all" && s.dataset.zone !== filter));
         chips.forEach(c => c.classList.toggle("active", c.dataset.filter === filter));
       };
 
@@ -85,7 +89,6 @@ import { withBase } from "../lib/url";
         });
       });
 
-      // Deep links from the home-page room rail: /gallery#vip
       const hash = location.hash.slice(1);
       if (hash && document.querySelector(`.chip[data-filter="${hash}"]`)) apply(hash);
     };

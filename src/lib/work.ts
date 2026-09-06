@@ -1,35 +1,30 @@
-// Photography of the craft itself, as opposed to the rooms in `zones.ts`.
-//
-// IMPORTANT: the files in /public/work are licensed stock photographs standing
-// in until real work from the salon is available. They are generic by nature —
-// swapping in your own clients is the single biggest upgrade this site can get.
-// To replace one, drop a file into /public/work and point the entry at it.
-// Nothing else needs to change.
+// Real work from the salon. Every image here is D Cube's own photography —
+// no stock. Rooms live separately in `zones.ts`.
 
 export interface Shot {
   src: string;
   alt: string;
   label: string;
-  /** false for the real interior renders, which need no warming */
-  stock?: boolean;
 }
 
+// The look book leads the home page: what people come here for.
 export const lookbook: Shot[] = [
-  { src: "/work/stylist-blowdry.jpg", alt: "A stylist blow-drying a client's hair", label: "Hair Studio", stock: true },
-  { src: "/work/makeup-application.jpg", alt: "Makeup being applied to a client", label: "Makeup", stock: true },
-  { src: "/work/hair-styling.jpg", alt: "Long hair being curled and styled", label: "Styling", stock: true },
-  { src: "/work/nails-service.jpg", alt: "A technician working at the nail bar", label: "Nail Bar", stock: true },
-  { src: "/work/mens-grooming.jpg", alt: "A client having a beard shaped", label: "Grooming", stock: true },
-  { src: "/work/hair-long.jpg", alt: "Long styled hair after treatment", label: "Hair Spa", stock: true },
+  { src: "/work/bridal-kanjeevaram.jpg", alt: "A bride in a cream and violet Kanjeevaram saree with temple jewellery", label: "Bridal" },
+  { src: "/work/bridal-kundan.jpg", alt: "Bridal makeup with a green and gold kundan maang tikka", label: "Bridal Makeup" },
+  { src: "/work/party-curls.jpg", alt: "Soft curls and party makeup in a blue embroidered outfit", label: "Party Look" },
+  { src: "/work/groom-beard.jpg", alt: "A groom with shaped beard and styled hair in an embroidered kurta", label: "Groom" },
+  { src: "/work/reception-gown.jpg", alt: "A reception gown look with a sleek braided updo", label: "Reception" },
+  { src: "/work/bridal-navy.jpg", alt: "A bride in navy and gold with a gold choker and mehendi", label: "Bridal" },
+  { src: "/work/groom-kurta.jpg", alt: "A groom in a cream kurta with a sharp cut and trimmed beard", label: "Grooming" },
 ];
 
-// One image per service house on the home page. Where no photograph of the
-// craft exists yet, the real room stands in — which is honest and on-brand.
+// One image per service. Where there is no photograph of the work yet, the
+// real room stands in — honest, and still ours.
 export const serviceMedia: Record<string, Shot> = {
-  bridal:  { src: "/work/makeup-application.jpg", alt: "Bridal makeup being applied", label: "Bridal", stock: true },
-  hair:    { src: "/work/stylist-blowdry.jpg", alt: "A stylist at work in the hair studio", label: "Hair", stock: true },
-  skin:    { src: "/interiors/facial-double.jpg", alt: "The double-bed facial room", label: "Skin" },
-  spa:     { src: "/work/hair-long.jpg", alt: "Hair after a spa treatment", label: "Spa", stock: true },
-  makeup:  { src: "/work/makeup-products.jpg", alt: "Makeup products laid out", label: "Makeup", stock: true },
-  nails:   { src: "/work/nails-hands.jpg", alt: "Manicured nails", label: "Nails", stock: true },
+  bridal: { src: "/work/bridal-kanjeevaram.jpg", alt: "A bride in a Kanjeevaram saree with temple jewellery", label: "Bridal" },
+  hair:   { src: "/work/party-curls.jpg", alt: "Soft curls styled at the salon", label: "Hair" },
+  makeup: { src: "/work/bridal-kundan.jpg", alt: "Makeup finished with a kundan maang tikka", label: "Makeup" },
+  groom:  { src: "/work/groom-beard.jpg", alt: "A groom with shaped beard and styled hair", label: "Groom" },
+  skin:   { src: "/interiors/facial-double.jpg", alt: "The double-bed facial room", label: "Skin" },
+  nails:  { src: "/interiors/nail-photo.jpg", alt: "The nail bar and photo corner", label: "Nails" },
 };

@@ -5,6 +5,7 @@ import Niche from "../components/Niche.astro";
 import ZoneRail from "../components/ZoneRail.astro";
 import { getPlaceReviews } from "../lib/reviews";
 import { lookbook, serviceMedia } from "../lib/work";
+import { withBase } from "../lib/url";
 
 const place = await getPlaceReviews();
 const quotes = place.reviews.slice(0, 3);
@@ -23,18 +24,17 @@ const shades = [
   { hex: "#7A2E38", name: "Merlot" },
   { hex: "#B8B0A6", name: "Silver" },
 ];
-import { withBase } from "../lib/url";
 ---
 <Layout>
-  <!-- ============ HERO: an arched portal into the salon ============ -->
+  <!-- ============ HERO ============ -->
   <section class="hero plaster">
     <div class="container">
       <span class="eyebrow centered">Chalakudy · Unisex Family Salon</span>
-      <h1>Step through the arch into the warm side of <em>getting ready</em>.</h1>
-      <p class="lead">Ten rooms of terracotta plaster and backlit mirrors — for a haircut, a facial, a full bridal morning, or all three on the same day.</p>
+      <h1>Brides, grooms and everyone <em>getting ready</em>.</h1>
+      <p class="lead">Bridal makeup, hair, skin, nails and grooming — for the whole family, by a team that has done this a few hundred times.</p>
       <div class="hero-actions">
         <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
-        <a href={withBase("/gallery")} class="btn btn-outline-cream">See the Space</a>
+        <a href={withBase("/services")} class="btn btn-outline-cream">See Services</a>
       </div>
       {place.rating != null && place.totalRatings != null && (
         <div class="hero-trust">
@@ -44,67 +44,33 @@ import { withBase } from "../lib/url";
       )}
     </div>
 
-    <div class="hero-portal">
+    <div class="hero-portal portrait">
       <figure class="framed">
-        <img src={withBase("/interiors/reception-01.jpg")} alt="The D Cube reception desk and lit signage wall" width="1536" height="1024" fetchpriority="high" />
+        <img src={withBase("/work/bridal-kanjeevaram.jpg")} alt="A D Cube bride in a cream and violet Kanjeevaram saree with gold temple jewellery" width="1080" height="1350" fetchpriority="high" />
       </figure>
-    </div>
-
-  </section>
-
-  <!-- ============ OPENING STATEMENT ============ -->
-  <section class="section section-overlap section-cream">
-    <div class="container">
-      <div class="stat-band reveal">
-        <div class="stat"><span class="num">10</span><span class="lbl">Rooms</span></div>
-        <div class="stat"><span class="num">2</span><span class="lbl">Studios</span></div>
-        <div class="stat"><span class="num">7</span><span class="lbl">Days Open</span></div>
-      </div>
-
-      <div class="split mt-lg" style="margin-top:clamp(56px,8vw,110px);">
-        <div class="stack reveal">
-          <div class="main">
-            <img src={withBase("/interiors/hair-01.jpg")} alt="Backlit organic mirrors along the hair studio wall" loading="lazy" width="1536" height="1024" />
-          </div>
-          <div class="inset">
-            <img src={withBase("/work/hair-styling.jpg")} alt="Hair being styled at the salon" class="warm" loading="lazy" />
-          </div>
-        </div>
-        <div class="reveal d1">
-          <span class="eyebrow">Why it feels different</span>
-          <h2>A salon designed as a place, not a queue.</h2>
-          <p class="lead">Most salons are one long room with chairs in it. D Cube was drawn as ten separate rooms — so a bride getting ready, a child getting a first haircut and someone in for a quiet facial never share the same air, noise or light.</p>
-          <p>Every mirror is backlit, every wall is hand-finished plaster, and every station has enough room around it that nobody has to squeeze past your chair.</p>
-          <a href={withBase("/about")} class="btn btn-outline mt-lg">Our Story</a>
-        </div>
-      </div>
     </div>
   </section>
 
   <Marquee />
 
-  <!-- ============ THE ROOMS ============ -->
-  <section class="section section-sand">
-    <div class="container">
-      <ZoneRail />
-    </div>
-  </section>
-
-  <!-- ============ THE WORK ============ -->
+  <!-- ============ THE WORK — leads the page ============ -->
   <section class="section section-cream">
     <div class="container">
       <div class="section-head centered reveal">
-        <span class="eyebrow centered">The work</span>
-        <h2>What leaves the chair.</h2>
-        <p>Cuts, colour, bridal mornings, grooming and nails — the reason the rooms exist.</p>
+        <span class="eyebrow centered">Our work</span>
+        <h2>Looks that left our chairs.</h2>
+        <p>Wedding mornings, receptions, first haircuts and everything between — all of it done here.</p>
       </div>
       <div class="lookbook reveal">
-        {lookbook.map(l => (
+        {lookbook.slice(0, 6).map(l => (
           <figure class="look">
-            <img src={withBase(l.src)} alt={l.alt} class={l.stock ? "warm" : ""} loading="lazy" width="1200" height="800" />
+            <img src={withBase(l.src)} alt={l.alt} loading="lazy" width="1080" height="1350" />
             <figcaption>{l.label}</figcaption>
           </figure>
         ))}
+      </div>
+      <div class="center mt-lg">
+        <a href={withBase("/gallery")} class="btn btn-outline">See More of Our Work</a>
       </div>
     </div>
   </section>
@@ -115,64 +81,71 @@ import { withBase } from "../lib/url";
       <div class="section-head centered reveal">
         <span class="eyebrow centered">What we do</span>
         <h2>Everything the family needs, under one roof.</h2>
-        <p>Six service houses, priced honestly and listed in full — no consultation required to find out what something costs.</p>
+        <p>Women, men and kids — bridal through to a fortnightly trim, with the full menu published.</p>
       </div>
       <div class="niche-grid" data-stagger>
         <Niche icon="✦" title="Bridal & Occasion" description="HD and airbrush bridal makeup, pre-bridal courses, draping, and a wardrobe of gowns and lehengas next door." media={serviceMedia.bridal} />
         <Niche icon="✂" title="Hair Studio" description="Cuts, global colour, balayage, keratin and smoothing — for women, men and kids." filled={true} delay="d1" media={serviceMedia.hair} />
+        <Niche icon="✧" title="Makeup" description="Party, engagement and event makeup, plus one-to-one lessons and a lit photo corner." delay="d2" media={serviceMedia.makeup} />
+        <Niche icon="◈" title="Groom & Men's" description="Cuts, beard shaping, groom makeup and grooming packages for the wedding party." delay="d1" media={serviceMedia.groom} />
         <Niche icon="❋" title="Skin & Facials" description="Clean-ups, brightening and anti-ageing facials, peels and threading in dedicated rooms." delay="d2" media={serviceMedia.skin} />
-        <Niche icon="◐" title="Hair Spa & Treatment" description="Scalp therapy, spa rituals and botox treatments in the low-lit treatment room." delay="d1" media={serviceMedia.spa} />
-        <Niche icon="✧" title="Makeup Studio" description="Party and event makeup, one-to-one lessons, and a lit photo corner to leave with pictures." delay="d2" media={serviceMedia.makeup} />
         <Niche icon="◇" title="Nails" description="Manicures, spa pedicures, gel extensions and nail art at the bar beside the studio." delay="d3" media={serviceMedia.nails} />
       </div>
       <div class="center mt-lg">
-        <a href={withBase("/services")} class="btn btn-clay">See the Full Service Menu</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ THE COLOUR WALL ============ -->
-  <section class="section section-clay plaster">
-    <div class="container">
-      <div class="split reverse">
-        <figure class="arch reveal">
-          <img src={withBase("/interiors/wash-lounge.jpg")} alt="Reclining wash basins beneath the Choose Your Shade colour wall" loading="lazy" width="1536" height="1024" />
-          <figcaption class="caption">The Wash Lounge</figcaption>
-        </figure>
-        <div class="reveal d1">
-          <span class="eyebrow">Choose your shade</span>
-          <h2>A colour wall, not a colour book.</h2>
-          <p class="lead">Above the wash basins sits a wall of every shade we stock. You pick against your own skin in the room's real light — not from a laminated card under a fluorescent tube.</p>
-          <div class="shade-strip">
-            {shades.map(s => (
-              <span class="swatch" style={`background:${s.hex}`} data-name={s.name} title={s.name}></span>
-            ))}
-          </div>
-          <a href={withBase("/services#hair-colour")} class="btn btn-outline-cream mt-lg">Colour & Highlight Services</a>
-        </div>
+        <a href={withBase("/services")} class="btn btn-clay">See the Full Menu</a>
       </div>
     </div>
   </section>
 
   <!-- ============ BRIDAL ============ -->
-  <section class="section section-sand">
+  <section class="section section-cream">
     <div class="container">
       <div class="split">
         <figure class="arch reveal">
-          <img src={withBase("/interiors/bridal-01.jpg")} alt="The bridal wardrobe storefront with D Cube signage" loading="lazy" width="1536" height="1024" />
-          <figcaption class="caption">Bridal Wardrobe</figcaption>
+          <img src={withBase("/work/bridal-navy.jpg")} alt="A D Cube bride in navy and gold with a gold choker and mehendi" loading="lazy" width="1080" height="1440" />
+          <figcaption class="caption">Bridal</figcaption>
         </figure>
         <div class="reveal d1">
           <span class="eyebrow">For the big morning</span>
           <h2>Get ready and get dressed in the same building.</h2>
-          <p class="lead">The bridal wardrobe opens straight off the salon floor. Trial your makeup, book the VIP suite for the morning itself, and pick the outfit without driving anywhere in between.</p>
-          <p>Wedding-season Saturdays book out weeks ahead — a trial is the fastest way to hold your date.</p>
+          <p class="lead">Trial your makeup, book a private suite for the morning itself, and pick the outfit from our bridal wardrobe — without driving anywhere in between.</p>
+          <p>Wedding-season Saturdays book out weeks ahead. A trial is the fastest way to hold your date.</p>
           <div class="hero-actions" style="justify-content:flex-start; margin-top:26px;">
             <a href={withBase("/contact")} class="btn btn-clay">Book a Bridal Trial</a>
-            <a href={withBase("/gallery#bridal")} class="btn btn-outline">See the Wardrobe</a>
+            <a href={withBase("/gallery")} class="btn btn-outline">See Bridal Work</a>
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ COLOUR ============ -->
+  <section class="section section-clay plaster">
+    <div class="container">
+      <div class="split reverse">
+        <figure class="arch reveal">
+          <img src={withBase("/work/party-curls.jpg")} alt="Soft curls and party makeup finished at the salon" loading="lazy" width="1080" height="1343" />
+          <figcaption class="caption">Colour & Styling</figcaption>
+        </figure>
+        <div class="reveal d1">
+          <span class="eyebrow">Choose your shade</span>
+          <h2>A colour wall, not a colour book.</h2>
+          <p class="lead">We keep every shade we stock on the wall above the basins, so you pick against your own skin in real light — not off a laminated card under a fluorescent tube.</p>
+          <div class="shade-strip">
+            {shades.map(s => (
+              <span class="swatch" style={`background:${s.hex}`} data-name={s.name} title={s.name}></span>
+            ))}
+          </div>
+          <a href={withBase("/services")} class="btn btn-outline-cream mt-lg">Colour & Highlight Services</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE ROOMS — supporting, not leading ============ -->
+  <section class="section section-sand">
+    <div class="container">
+      <ZoneRail />
     </div>
   </section>
 
@@ -198,9 +171,6 @@ import { withBase } from "../lib/url";
           </figure>
         ))}
       </div>
-      <div class="center mt-lg">
-        <a href="https://www.google.com/maps/place/?q=place_id:ChIJYSspWmwCCDsR0xCaMNPVWWA" target="_blank" rel="noopener" class="btn btn-outline">Read All Reviews on Google</a>
-      </div>
     </div>
   </section>
   )}
@@ -209,8 +179,8 @@ import { withBase } from "../lib/url";
   <section class="cta plaster">
     <div class="container reveal">
       <span class="eyebrow centered">Open Mon – Sat, 10am – 8pm</span>
-      <h2>Come and see the room in person.</h2>
-      <p>Walk-ins are welcome. Bookings get the chair, the hour and the room you actually wanted.</p>
+      <h2>Book your chair.</h2>
+      <p>Walk-ins are welcome. Bookings get the stylist, the hour and the room you wanted.</p>
       <div class="cta-actions">
         <a href={withBase("/contact")} class="btn btn-cream">Book a Chair</a>
         <a href="tel:+919946007990" class="btn btn-outline-cream">+91 99460 07990</a>
