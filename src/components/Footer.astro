@@ -36,8 +36,10 @@ const year = new Date().getFullYear();
       </div>
       <div>
         <h4>Open</h4>
-        <span style="display:block; margin-bottom:9px; font-size:0.92rem;">Mon – Sat · 10am – 8pm</span>
-        <span style="display:block; margin-bottom:18px; font-size:0.92rem;">Sunday · 11am – 6pm</span>
+        {business.hoursLines.map(line => (
+          <span style="display:block; margin-bottom:9px; font-size:0.92rem;">{line}</span>
+        ))}
+        <span style="display:block; height:9px;"></span>
         <a href={withBase("/contact")} class="btn btn-outline-cream btn-sm" style="display:inline-flex;">Book a Chair</a>
       </div>
     </div>

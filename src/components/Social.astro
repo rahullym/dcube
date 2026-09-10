@@ -1,14 +1,16 @@
 ---
+import { business } from "../lib/business";
+
 // Only channels we have real, confirmed details for. Nothing invented.
 interface Props { compact?: boolean; }
 const { compact = false } = Astro.props;
 
 const links = [
   { key: "instagram", label: "Instagram", href: "https://www.instagram.com/dcube_unisexsalon/", external: true },
-  { key: "whatsapp",  label: "WhatsApp",  href: "https://wa.me/919946007990", external: true },
-  { key: "phone",     label: "Call the salon", href: "tel:+919946007990", external: false },
-  { key: "email",     label: "Email us",  href: "mailto:hello@dcubesalon.com", external: false },
-  { key: "map",       label: "Find us on Google Maps", href: "https://www.google.com/maps/place/?q=place_id:ChIJYSspWmwCCDsR0xCaMNPVWWA", external: true },
+  { key: "whatsapp",  label: "WhatsApp",  href: business.whatsapp, external: true },
+  { key: "phone",     label: "Call the salon", href: `tel:${business.telephoneE164}`, external: false },
+  { key: "email",     label: "Email us",  href: `mailto:${business.email}`, external: false },
+  { key: "map",       label: "Find us on Google Maps", href: business.mapUrl, external: true },
 ];
 ---
 <ul class={`social-row${compact ? " compact" : ""}`} data-stagger>

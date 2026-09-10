@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: "What are the salon's opening hours?",
-    a: "The salon is open Monday to Saturday from 10am to 8pm, and on Sunday from 11am to 6pm. Walk-ins are welcome during these hours, though weekends and wedding season fill first.",
+    a: "The salon is open Monday to Saturday from 10am to 8.30pm, and on Sunday from 10am to 7pm. Walk-ins are welcome during these hours, though weekends and wedding season fill first.",
   },
   {
     q: "Is D Cube a unisex salon?",
@@ -44,7 +44,7 @@ const contactSchema = [faqSchema(faqs)];
 ---
 <Layout
   title="Visit & Book | D Cube Salon, Chalakudy — Hours & Map"
-  description="D Cube Family Salon, Second Floor, Kidangan's Arcade, near St. James Hospital, Chalakudy 680307. Open Mon–Sat 10am–8pm, Sunday 11am–6pm. Call or WhatsApp +91 99460 07990 to book."
+  description={`D Cube Family Salon, Second Floor, Kidangan's Arcade, near St. James Hospital, Chalakudy 680307. Open ${business.hoursLine}. Call or WhatsApp ${business.telephone} to book.`}
   image="/interiors/reception-03.jpg"
   imageAlt="The view through the lobby arches into the D Cube salon floor"
   breadcrumb={[
@@ -148,7 +148,7 @@ const contactSchema = [faqSchema(faqs)];
             </div>
             <div class="info-row">
               <div class="ico" aria-hidden="true">◷</div>
-              <div><strong>Open</strong>Mon – Sat · 10am – 8pm<br />Sunday · 11am – 6pm</div>
+              <div><strong>Open</strong>{business.hoursLines.map((line, i) => (<>{i > 0 && <br />}{line}</>))}</div>
             </div>
           </div>
 
